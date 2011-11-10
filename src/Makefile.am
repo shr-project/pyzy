@@ -33,7 +33,7 @@
 # 	$(NULL)
 # 
 
-libpyzyincludedir = $(includedir)/libpyzy-1.0
+libpyzyincludedir = $(includedir)/pyzy-@PYZY_API_VERSION@
 libpyzyinclude_HEADERS = \
 	PyZyInputContext.h \
 	PyZyConfig.h \

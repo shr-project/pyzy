@@ -19,30 +19,71 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-# if not 1, append datestamp to the version number.
-m4_define([ibus_released], [0])
-m4_define([ibus_major_version], [1])
-m4_define([ibus_minor_version], [3])
-m4_define([ibus_micro_version], [99])
-m4_define(ibus_maybe_datestamp,
-    m4_esyscmd([if test x]ibus_released[ != x1; then date +.%Y%m%d | tr -d '\n\r'; fi]))
+# If pyzy_released is 0, append datestamp to the version number.
+m4_define([pyzy_released], [1])
 
-m4_define([ibus_version],
-    ibus_major_version.ibus_minor_version.ibus_micro_version[]ibus_maybe_datestamp)
+m4_define([pyzy_major_version], [0])
+m4_define([pyzy_minor_version], [0])
+m4_define([pyzy_micro_version], [1])
+m4_define([pyzy_interface_age], [0])
+m4_define([pyzy_binary_age],
+          [m4_eval(100 * pyzy_minor_version + pyzy_micro_version)])
+m4_define([pyzy_maybe_datestamp],
+    m4_esyscmd([test x]pyzy_released[ != x1 && date +.%Y%m%d | tr -d '\n\r']))
+m4_define([pyzy_version],
+    pyzy_major_version.pyzy_minor_version.pyzy_micro_version[]pyzy_maybe_datestamp)
+m4_define([pyzy_api_version], [1.0])
 
-AC_INIT([libpyzy], [ibus_version], [http://code.google.com/p/ibus/issues/entry],[libpyzy])
-AM_INIT_AUTOMAKE([1.10])
-AC_GNU_SOURCE
+AC_PREFEQ([2.62])
+AC_INIT([pyzy], [pyzy_version],
+        [http://code.google.com/p/ibus/issues/entry],
+        [pyzy])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
+m4_define([pyzy_binary_version], [1.0.0])
+
+# Init automake.
+AM_INIT_AUTOMAKE([1.10])
+AM_MAINTAINER_MODE([enable])
+AC_GNU_SOURCE
+
+# Support silent build rules. Disable
+# by either passing --disable-silent-rules to configure or passing V=1
+# to make
+AM_SILENT_RULES([yes])
+
+# Define sustituted variables:
+PYZY_MAJOR_VERSION=pyzy_major_version
+PYZY_MINOR_VERSION=pyzy_minor_version
+PYZY_MICRO_VERSION=pyzy_micro_version
+PYZY_INTERFACE_AGE=pyzy_interface_age
+PYZY_BINARY_AGE=pyzy_binary_age
+PYZY_VERSION=pyzy_version
+PYZY_API_VERSION=pyzy_api_version
+PYZY_BINARY_VERSION=pyzy_binary_version
+AC_SUBST(PYZY_MAJOR_VERSION)
+AC_SUBST(PYZY_MINOR_VERSION)
+AC_SUBST(PYZY_MICRO_VERSION)
+AC_SUBST(PYZY_INTERFACE_AGE)
+AC_SUBST(PYZY_BINARY_AGE)
+AC_SUBST(PYZY_API_VERSION)
+AC_SUBST(PYZY_VERSION)
+AC_SUBST(PYZY_BINARY_VERSION)
+
+# libtool versioning
+m4_define([lt_current],
+          [m4_eval(100 * pyzy_minor_version + pyzy_micro_version - pyzy_interface_age)])
+m4_define([lt_revision], [pyzy_interface_age])
+m4_define([lt_age], [m4_eval(pyzy_binary_age - pyzy_interface_age)])
+LT_VERSION_INFO="lt_current:lt_revision:lt_age"
+LT_CURRENT_MINUS_AGE=m4_eval(lt_current - lt_age)
+AC_SUBST(LT_VERSION_INFO)
+AC_SUBST(LT_CURRENT_MINUS_AGE)
 
 # define PACKAGE_VERSION_* variables
-AS_VERSION
-AS_NANO
 AM_SANITY_CHECK
-AM_MAINTAINER_MODE
 AM_DISABLE_STATIC
 AC_PROG_CC
 AC_PROG_CXX
@@ -144,6 +185,7 @@ AM_CONDITIONAL(IBUS_BUILD_DB_OPEN_PHRASE, [test x"$enable_db_open_phrase" = x"ye
 AC_CONFIG_FILES([
 Makefile
 libpyzy.spec
+pyzy-1.0.pc
 src/Makefile
 data/Makefile
 data/db/Makefile

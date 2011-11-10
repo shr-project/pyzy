@@ -25,6 +25,9 @@ SUBDIRS = \
 	m4 \
 	$(NULL)
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = pyzy-@PYZY_API_VERSION@.pc
+
 DISTCHECK_CONFIGURE_FLAGS = \
 	CFLAGS='-g3 -O3 -Wall' \
 	CXXFLAGS='-g3 -O3 -Wall' \
