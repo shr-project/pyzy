@@ -33,12 +33,15 @@
 # 	$(NULL)
 # 
 
+libpyzy=libpyzy-1.0.la
+
 libpyzyincludedir = $(includedir)/pyzy-@PYZY_API_VERSION@
 libpyzyinclude_HEADERS = \
 	PyZyInputContext.h \
 	PyZyConfig.h \
 	$(NULL)
-lib_LTLIBRARIES = libpyzy.la
+
+lib_LTLIBRARIES = $(libpyzy)
 
 libpyzy_built_c_sources = \
 	$(NULL)
@@ -88,15 +91,19 @@ libpyzy_h_sources = \
 	PyZyUtil.h \
 	$(NULL)
 
-libpyzy_la_SOURCES = \
+libpyzy_1_0_la_SOURCES = \
 	$(libpyzy_c_sources) \
 	$(libpyzy_h_sources) \
 	$(libpyzy_built_c_sources) \
 	$(libpyzy_built_h_sources) \
 	$(NULL)
 
+libpyzy_1_0_la_LDFLAGS = \
+	-no-undefined \
+	-version-info @LT_VERSION_INFO@ \
+	$(NULL)
 
-libpyzy_la_CXXFLAGS = \
+libpyzy_1_0_la_CXXFLAGS = \
 	@GLIB2_CFLAGS@ \
 	@SQLITE_CFLAGS@ \
 	@OPENCC_CFLAGS@ \
@@ -104,16 +111,16 @@ libpyzy_la_CXXFLAGS = \
 	$(NULL)
 
 if HAVE_BOOST
-libpyzy_la_CXXFLAGS += \
+libpyzy_1_0_la_CXXFLAGS += \
 	@BOOST_CPPFLAGS@ \
 	$(NULL)
 else
-libpyzy_la_CXXFLAGS += \
+libpyzy_1_0_la_CXXFLAGS += \
 	-std=c++0x \
 	$(NULL)
 endif
 
-libpyzy_la_LIBADD = \
+libpyzy_1_0_la_LIBADD = \
 	@GLIB2_LIBS@ \
 	@SQLITE_LIBS@ \
 	@OPENCC_LIBS@ \
@@ -121,8 +128,8 @@ libpyzy_la_LIBADD = \
 	$(NULL)
 
 if HAVE_LIBUUID
-libpyzy_la_CXXFLAGS += $(LIBUUID_CFLAGS)
-libpyzy_la_LIBADD += $(LIBUUID_LIBS)
+libpyzy_1_0_la_CXXFLAGS += $(LIBUUID_CFLAGS)
+libpyzy_1_0_la_LIBADD += $(LIBUUID_LIBS)
 endif
 
 BUILT_SOURCES = \
