@@ -136,10 +136,10 @@ AC_SUBST(ENV)
 
 # --disble-boost
 AC_ARG_ENABLE(boost,
-    AC_HELP_STRING([--disable-boost],
+    AC_HELP_STRING([--enable-boost],
         [Do not use boost and use stdc++0x to replace boost.]),
         [enable_boost=$enableval],
-        [enable_boost=yes]
+        [enable_boost=no]
 )
 if test x"$enable_boost" = x"yes"; then
     # check boost

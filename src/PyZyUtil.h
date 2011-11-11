@@ -37,7 +37,7 @@
 #include <string>
 #include <glib/gtypes.h>
 
-#ifdef __GXX_EXPERIMENTAL_CXX0X__PYZY_
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
 #  include <memory>
 #else
 #  include <boost/shared_ptr.hpp>
