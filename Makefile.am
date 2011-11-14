@@ -39,7 +39,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
 	autogen.sh \
-	libpyzy.spec.in \
+	@PACKAGE_NAME@.spec.in \
 	$(NULL)
 
 noinst_DIST = \
@@ -117,7 +117,7 @@ dpkg: dist debian/changelog
 
 upload: dist
 	./tools/googlecode_upload.py \
-		-s "libpyzy source code" \
+		-s "pyzy source code" \
 		-p ibus \
 		-l "Type-Source,OpSys-Linux,Chinese,Unstable" \
 		$(distdir).tar.gz

@@ -184,7 +184,7 @@ AM_CONDITIONAL(IBUS_BUILD_DB_OPEN_PHRASE, [test x"$enable_db_open_phrase" = x"ye
 # OUTPUT files
 AC_CONFIG_FILES([
 Makefile
-libpyzy.spec
+pyzy.spec
 pyzy-1.0.pc
 src/Makefile
 data/Makefile

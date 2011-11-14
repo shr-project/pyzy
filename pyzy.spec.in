@@ -15,35 +15,43 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  sqlite-devel
 BuildRequires:  libuuid-devel
-BuildRequires:  boost-devel >= 1.39
 BuildRequires:  gtest-devel
 
 # Requires(post): sqlite
 
-Requires:   libpyzy-db = %{version}-%{release}
+Requires:   pyzy-db = %{version}-%{release}
 
 %description
 The Chinese Pinyin and Bopomofo conversion library.
 
+%package    devel
+Summary:    Development tools for pyzy
+Group:      Development/Libraries
+Requires:   %{name} = %{version}-%{release}
+Requires:   glib2-devel
+
+%description devel
+The pyzy-devel package contains the header files for pyzy.
+
 %package    db-open-phrase
-Summary:    The open phrase database for libpyzy
+Summary:    The open phrase database for pyzy
 Group:      System Environment/Libraries
 BuildArch:  noarch
-Provides:   libpyzy-db
+Provides:   pyzy-db
 Requires(post): sqlite
 
 %description db-open-phrase
-The phrase database for libpyzy from open-phrase project.
+The phrase database for pyzy from open-phrase project.
 
 %package    db-android
-Summary:    The android phrase database for libpyzy
+Summary:    The android phrase database for pyzy
 Group:      System Environment/Libraries
 BuildArch:  noarch
-Provides:   libpyzy-db
+Provides:   pyzy-db
 Requires(post): sqlite
 
 %description db-android
-The phrase database for libpyzy from android project.
+The phrase database for pyzy from android project.
 
 %prep
 %setup -q
@@ -57,33 +65,38 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 # make DESTDIR=${RPM_BUILD_ROOT} NO_INDEX=true install
-make DESTDIR=${RPM_BUILD_ROOT} install
-
-%find_lang %{name}
+make DESTDIR=$RPM_BUILD_ROOT install
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-# cd %{_datadir}/libpyzy/db
+# cd %{_datadir}/@PACKAGE@/db
 # sqlite3 android.db ".read create_index.sql"
 
 %post db-open-phrase
-# cd %{_datadir}/libpyzy/db
+# cd %{_datadir}/@PACKAGE@/db
 # sqlite3 open-phrase.db ".read create_index.sql"
 
 %post db-android
-# cd %{_datadir}/libpyzy/db
+# cd %{_datadir}/@PACKAGE@/db
 # sqlite3 android.db ".read create_index.sql"
 
-%files -f %{name}.lang
+%files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING README
+%{_libdir}/lib*.so.*
 %{_datadir}/@PACKAGE@/phrases.txt
-%{_datadir}/@PACKAGE@/icons
 %{_datadir}/@PACKAGE@/db/create_index.sql
 %dir %{_datadir}/@PACKAGE@
 %dir %{_datadir}/@PACKAGE@/db
+
+%files devel
+%defattr(-,root,root,-)
+%{_libdir}/lib*.so
+%{_libdir}/pkgconfig/*
+%{_includedir}/*
 
 %files db-open-phrase
 %{_datadir}/@PACKAGE@/db/open-phrase.db
