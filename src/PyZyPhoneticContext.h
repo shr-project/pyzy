@@ -64,14 +64,14 @@ public:
     virtual void bopomofoSelectMode () { }
 
     /* Accessors of InputContext. */
-    virtual std::string inputText () const { return m_text; }
-    virtual std::string selectedText (void) const { return m_preedit_text.selected_text; }
-    virtual std::string conversionText (void) const { return m_preedit_text.candidate_text; }
-    virtual std::string restText (void) const { return m_preedit_text.rest_text; }
-    virtual std::string auxiliaryText (void) const { return m_auxiliary_text; }
-    virtual std::vector<Candidate> candidates () const { return m_candidates; }
-    virtual size_t cursor () const { return m_cursor; }
-    virtual size_t focusedCandidate () const { return m_focused_candidate; }
+    virtual const std::string & inputText () const { return m_text; }
+    virtual const std::string & selectedText (void) const { return m_preedit_text.selected_text; }
+    virtual const std::string & conversionText (void) const { return m_preedit_text.candidate_text; }
+    virtual const std::string & restText (void) const { return m_preedit_text.rest_text; }
+    virtual const std::string & auxiliaryText (void) const { return m_auxiliary_text; }
+    virtual const std::vector<Candidate> & candidates () const { return m_candidates; }
+    virtual unsigned int cursor () const { return m_cursor; }
+    virtual unsigned int focusedCandidate () const { return m_focused_candidate; }
 
 protected:
     virtual void resetContext (void);

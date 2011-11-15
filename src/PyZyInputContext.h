@@ -100,14 +100,15 @@ public:
                                  InputContext::Observer * observer);
 
     /* accessors */
-    virtual std::string inputText () const = 0;
-    virtual std::string selectedText (void) const = 0;
-    virtual std::string conversionText (void) const = 0;
-    virtual std::string restText (void) const = 0;
-    virtual std::string auxiliaryText (void) const = 0;
-    virtual std::vector<Candidate> candidates () const = 0;
-    virtual size_t cursor () const = 0;
-    virtual size_t focusedCandidate () const = 0;
+    virtual const std::string & inputText () const = 0;
+    virtual const std::string & selectedText (void) const = 0;
+    virtual const std::string & conversionText (void) const = 0;
+    virtual const std::string & restText (void) const = 0;
+    virtual const std::string & auxiliaryText (void) const = 0;
+    // TODO(hsumita): Change return value to "class Candidates".
+    virtual const std::vector<Candidate> & candidates () const = 0;
+    virtual unsigned int cursor () const = 0;
+    virtual unsigned int focusedCandidate () const = 0;
 };
 
 }; // namespace PyZy
