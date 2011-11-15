@@ -163,16 +163,11 @@ PinyinConfig::PinyinConfig ()
 PinyinConfig &
 PinyinConfig::instance ()
 {
-    return *PinyinConfigImpl::m_instance;
-}
-
-void
-PinyinConfig::init ()
-{
     if (PinyinConfigImpl::m_instance == NULL) {
         PinyinConfigImpl::m_instance.reset (new PinyinConfig ());
         PinyinConfigImpl::m_instance->readDefaultValues ();
     }
+    return *PinyinConfigImpl::m_instance;
 }
 
 void
@@ -198,16 +193,11 @@ BopomofoConfig::BopomofoConfig ()
 BopomofoConfig &
 BopomofoConfig::instance ()
 {
-    return *BopomofoConfigImpl::m_instance;
-}
-
-void
-BopomofoConfig::init ()
-{
     if (BopomofoConfigImpl::m_instance == NULL) {
         BopomofoConfigImpl::m_instance.reset (new BopomofoConfig ());
         BopomofoConfigImpl::m_instance->readDefaultValues ();
     }
+    return *BopomofoConfigImpl::m_instance;
 }
 
 void

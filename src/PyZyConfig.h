@@ -63,7 +63,6 @@ protected:
 /* PinyinConfig */
 class PinyinConfig : public Config {
 public:
-    static void init ();
     static PinyinConfig & instance (void);
     virtual void readDefaultValues (void);
 
@@ -78,7 +77,6 @@ private:
 /* Bopomof Config */
 class BopomofoConfig : public Config {
 public:
-    static void init ();
     static BopomofoConfig & instance (void);
     virtual void readDefaultValues (void);
 

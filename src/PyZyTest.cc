@@ -46,8 +46,6 @@ class PyZyTest : public testing::Test {
 protected:
     virtual void SetUp () {
         InputContext::init ("libpyzy-test");
-        PinyinConfig::init ();
-        BopomofoConfig::init ();
     }
 
     virtual void TearDown () {
