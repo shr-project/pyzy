@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
-static const gchar *simp_to_trad[][2] = {
+static const char *simp_to_trad[][2] = {
     { "〇余", "〇餘" },
     { "〇只", "〇隻" },
     { "一个准", "一個準" },

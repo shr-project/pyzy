@@ -73,10 +73,10 @@ public:
     void lookupTableChanged (const InputContext *context)     { ++m_lookup_table; }
 
     string commitedText ()         { return m_commited_text; }
-    guint commitTextCount ()       { return m_commit_text; }
-    guint preeditTextCount ()      { return m_preedit_text; }
-    guint auxiliaryTextCount ()    { return m_auxiliary_text; }
-    guint lookupTableCount ()      { return m_lookup_table; }
+    unsigned int commitTextCount ()       { return m_commit_text; }
+    unsigned int preeditTextCount ()      { return m_preedit_text; }
+    unsigned int auxiliaryTextCount ()    { return m_auxiliary_text; }
+    unsigned int lookupTableCount ()      { return m_lookup_table; }
 
     void clear () {
         m_commited_text.clear ();
@@ -87,14 +87,14 @@ public:
     }
 private:
     string    m_commited_text;
-    guint     m_commit_text;
-    guint     m_preedit_text;
-    guint     m_auxiliary_text;
-    guint     m_lookup_table;
+    unsigned int     m_commit_text;
+    unsigned int     m_preedit_text;
+    unsigned int     m_auxiliary_text;
+    unsigned int     m_lookup_table;
 };
 
 void insertKeys (PhoneticContext &context, const string &keys) {
-    for (guint i = 0; i < keys.size (); ++i) {
+    for (size_t i = 0; i < keys.size (); ++i) {
         context.insert (keys[i]);
     }
 }

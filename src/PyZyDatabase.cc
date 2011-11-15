@@ -41,6 +41,7 @@ namespace PyZy {
 
 #define USER_DICTIONARY_FILE  "user-1.3.db"
 
+
 std::unique_ptr<Database> Database::m_instance;
 
 class Conditions : public std::vector<std::string> {
@@ -48,14 +49,14 @@ public:
     Conditions (void) : std::vector<std::string> (1) {}
 
     void double_ (void) {
-        gint i = size ();
+        size_t i = size ();
         do {
             push_back (at (--i));
         } while (i > 0);
     }
 
     void triple (void) {
-        gint i = size ();
+        size_t i = size ();
         do {
             const std::string & value = std::vector<std::string>::at (--i);
             push_back (value);
@@ -63,15 +64,15 @@ public:
         } while (i > 0);
     }
 
-    void appendVPrintf (gint begin, gint end, const gchar *fmt, va_list args) {
-        gchar str[64];
+    void appendVPrintf (size_t begin, size_t end, const char *fmt, va_list args) {
+        char str[64];
         g_vsnprintf (str, sizeof(str), fmt, args);
-        for (gint i = begin; i < end; i++) {
+        for (size_t i = begin; i < end; i++) {
             at (i) += str;
         }
     }
 
-    void appendPrintf (gint begin, gint end, const gchar *fmt, ...) {
+    void appendPrintf (size_t begin, size_t end, const char *fmt, ...) {
         va_list args;
         va_start (args, fmt);
         appendVPrintf (begin, end, fmt, args);
@@ -94,36 +95,36 @@ public:
         }
     }
 
-    gboolean prepare (const String &sql) {
+    bool prepare (const String &sql) {
         if (sqlite3_prepare (m_db,
                              sql.c_str (),
                              sql.size (),
                              &m_stmt,
                              NULL) != SQLITE_OK) {
             g_warning ("parse sql failed!\n %s", sql.c_str ());
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
-    gboolean step (void) {
+    bool step (void) {
         switch (sqlite3_step (m_stmt)) {
         case SQLITE_ROW:
-            return TRUE;
+            return true;
         case SQLITE_DONE:
-            return FALSE;
+            return false;
         default:
             g_warning ("sqlites step error!");
-            return FALSE;
+            return false;
         }
     }
 
-    const gchar *columnText (guint col) {
-        return (const gchar *) sqlite3_column_text (m_stmt, col);
+    const char *columnText (int col) {
+        return (const char *) sqlite3_column_text (m_stmt, col);
     }
 
-    gint columnInt (guint col) {
+    int columnInt (int col) {
         return sqlite3_column_int (m_stmt, col);
     }
 
@@ -133,9 +134,9 @@ private:
 };
 
 Query::Query (const PinyinArray    & pinyin,
-              guint                  pinyin_begin,
-              guint                  pinyin_len,
-              guint                  option)
+              size_t                 pinyin_begin,
+              size_t                 pinyin_len,
+              unsigned int           option)
     : m_pinyin (pinyin),
       m_pinyin_begin (pinyin_begin),
       m_pinyin_len (pinyin_len),
@@ -148,10 +149,10 @@ Query::~Query (void)
 {
 }
 
-gint
-Query::fill (PhraseArray &phrases, gint count)
+int
+Query::fill (PhraseArray &phrases, int count)
 {
-    gint row = 0;
+    int row = 0;
 
     while (m_pinyin_len > 0) {
         if (G_LIKELY (m_stmt.get () == NULL)) {
@@ -169,7 +170,7 @@ Query::fill (PhraseArray &phrases, gint count)
             phrase.user_freq = m_stmt->columnInt (DB_COLUMN_USER_FREQ);
             phrase.len = m_pinyin_len;
 
-            for (guint i = 0, column = DB_COLUMN_S0; i < m_pinyin_len; i++) {
+            for (size_t i = 0, column = DB_COLUMN_S0; i < m_pinyin_len; i++) {
                 phrase.pinyin_id[i].sheng = m_stmt->columnInt (column++);
                 phrase.pinyin_id[i].yun = m_stmt->columnInt (column++);
             }
@@ -211,36 +212,36 @@ Database::~Database (void)
     }
 }
 
-inline gboolean
-Database::executeSQL (const gchar *sql, sqlite3 *db)
+inline bool
+Database::executeSQL (const char *sql, sqlite3 *db)
 {
     if (db == NULL)
         db = m_db;
 
-    gchar *errmsg = NULL;
+    char *errmsg = NULL;
     if (sqlite3_exec (db, sql, NULL, NULL, &errmsg) != SQLITE_OK) {
         g_warning ("%s: %s", errmsg, sql);
         sqlite3_free (errmsg);
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
-gboolean
+bool
 Database::open (void)
 {
     do {
 #if (SQLITE_VERSION_NUMBER >= 3006000)
         sqlite3_initialize ();
 #endif
-        static const gchar * maindb [] = {
+        static const char * maindb [] = {
             PKGDATADIR"/db/local.db",
             PKGDATADIR"/db/open-phrase.db",
             PKGDATADIR"/db/android.db",
             "main.db",
         };
 
-        guint i;
+        size_t i;
         for (i = 0; i < G_N_ELEMENTS (maindb); i++) {
             if (!g_file_test(maindb[i], G_FILE_TEST_IS_REGULAR))
                 continue;
@@ -297,17 +298,17 @@ Database::open (void)
         /* prefetch some tables */
         // prefetch ();
 
-        return TRUE;
+        return true;
     } while (0);
 
     if (m_db) {
         sqlite3_close (m_db);
         m_db = NULL;
     }
-    return FALSE;
+    return false;
 }
 
-gboolean
+bool
 Database::loadUserDB (void)
 {
     sqlite3 *userdb = NULL;
@@ -321,7 +322,7 @@ Database::loadUserDB (void)
         m_buffer.clear ();
         m_buffer << m_user_data_dir << G_DIR_SEPARATOR_S << USER_DICTIONARY_FILE;
 
-        gint flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+        unsigned int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
         if (sqlite3_open_v2 (m_buffer, &userdb, flags, NULL) != SQLITE_OK &&
             sqlite3_open_v2 (":memory:", &userdb, flags, NULL) != SQLITE_OK)
             break;
@@ -337,9 +338,9 @@ Database::loadUserDB (void)
               << "INSERT OR IGNORE INTO desc VALUES " << "('attach-time', datetime());\n";
 
         /* create phrase tables */
-        for (guint i = 0; i < MAX_PHRASE_LEN; i++) {
+        for (size_t i = 0; i < MAX_PHRASE_LEN; i++) {
             m_sql.appendPrintf ("CREATE TABLE IF NOT EXISTS py_phrase_%d (user_freq, phrase TEXT, freq INTEGER ", i);
-            for (guint j = 0; j <= i; j++)
+            for (size_t j = 0; j <= i; j++)
                 m_sql.appendPrintf (",s%d INTEGER, y%d INTEGER", j, j);
             m_sql << ");\n";
         }
@@ -348,10 +349,10 @@ Database::loadUserDB (void)
         m_sql << "CREATE UNIQUE INDEX IF NOT EXISTS " << "index_0_0 ON py_phrase_0(s0,y0,phrase);\n";
         m_sql << "CREATE UNIQUE INDEX IF NOT EXISTS " << "index_1_0 ON py_phrase_1(s0,y0,s1,y1,phrase);\n";
         m_sql << "CREATE INDEX IF NOT EXISTS " << "index_1_1 ON py_phrase_1(s0,s1,y1);\n";
-        for (guint i = 2; i < MAX_PHRASE_LEN; i++) {
+        for (size_t i = 2; i < MAX_PHRASE_LEN; i++) {
             m_sql << "CREATE UNIQUE INDEX IF NOT EXISTS " << "index_" << i << "_0 ON py_phrase_" << i
                   << "(s0,y0";
-            for (guint j = 1; j <= i; j++)
+            for (size_t j = 1; j <= i; j++)
                 m_sql << ",s" << j << ",y" << j;
             m_sql << ",phrase);\n";
             m_sql << "CREATE INDEX IF NOT EXISTS " << "index_" << i << "_1 ON py_phrase_" << i << "(s0,s1,s2,y2);\n";
@@ -369,15 +370,15 @@ Database::loadUserDB (void)
         }
 
         sqlite3_close (userdb);
-        return TRUE;
+        return true;
     } while (0);
 
     if (userdb)
         sqlite3_close (userdb);
-    return FALSE;
+    return false;
 }
 
-gboolean
+bool
 Database::saveUserDB (void)
 {
     g_mkdir_with_parents (m_user_data_dir, 0750);
@@ -390,7 +391,7 @@ Database::saveUserDB (void)
         /* remove tmpfile if it exist */
         g_unlink (tmpfile);
 
-        gint flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+        unsigned int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
         if (sqlite3_open_v2 (tmpfile, &userdb, flags, NULL) != SQLITE_OK)
             break;
 
@@ -405,21 +406,21 @@ Database::saveUserDB (void)
 
         g_rename (tmpfile, m_buffer);
 
-        return TRUE;
+        return true;
     } while (0);
 
     if (userdb != NULL)
         sqlite3_close (userdb);
     g_unlink (tmpfile);
 
-    return FALSE;
+    return false;
 }
 
 void
 Database::prefetch (void)
 {
     m_sql.clear ();
-    for (guint i = 0; i < DB_PREFETCH_LEN; i++)
+    for (size_t i = 0; i < DB_PREFETCH_LEN; i++)
         m_sql << "SELECT * FROM py_phrase_" << i << ";\n";
 
     // g_debug ("prefetching ...");
@@ -427,21 +428,22 @@ Database::prefetch (void)
     // g_debug ("done");
 }
 
+// This function should be return gboolean because g_timeout_add_seconds requires it.
 gboolean
-Database::timeoutCallback (gpointer data)
+Database::timeoutCallback (void * data)
 {
     Database *self = static_cast<Database*> (data);
 
     /* Get elapsed time since last modification of database. */
-    guint elapsed = (guint)g_timer_elapsed (self->m_timer, NULL);
+    unsigned int elapsed = (unsigned int)g_timer_elapsed (self->m_timer, NULL);
 
     if (elapsed >= DB_BACKUP_TIMEOUT &&
         self->saveUserDB ()) {
         self->m_timeout_id = 0;
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 void
@@ -455,11 +457,11 @@ Database::modified (void)
 
     m_timeout_id = g_timeout_add_seconds (DB_BACKUP_TIMEOUT,
                                           Database::timeoutCallback,
-                                          static_cast<gpointer> (this));
+                                          static_cast<void *> (this));
 }
 
-inline static gboolean
-pinyin_option_check_sheng (guint option, gint id, gint fid)
+inline static bool
+pinyin_option_check_sheng (unsigned int option, unsigned int id, unsigned int fid)
 {
     switch ((id << 16) | fid) {
     case (PINYIN_ID_C << 16) | PINYIN_ID_CH:
@@ -490,12 +492,12 @@ pinyin_option_check_sheng (guint option, gint id, gint fid)
         return (option & PINYIN_FUZZY_K_G);
     case (PINYIN_ID_G << 16) | PINYIN_ID_K:
         return (option & PINYIN_FUZZY_G_K);
-    default: return FALSE;
+    default: return false;
     }
 }
 
-inline static gboolean
-pinyin_option_check_yun (guint option, gint id, gint fid)
+inline static bool
+pinyin_option_check_yun (unsigned int option, unsigned int id, unsigned int fid)
 {
     switch ((id << 16) | fid) {
     case (PINYIN_ID_AN << 16) | PINYIN_ID_ANG:
@@ -518,16 +520,16 @@ pinyin_option_check_yun (guint option, gint id, gint fid)
         return (option & PINYIN_FUZZY_UAN_UANG);
     case (PINYIN_ID_UANG << 16) | PINYIN_ID_UAN:
         return (option & PINYIN_FUZZY_UANG_UAN);
-    default: return FALSE;
+    default: return false;
     }
 }
 
 SQLStmtPtr
 Database::query (const PinyinArray &pinyin,
-                 guint              pinyin_begin,
-                 guint              pinyin_len,
-                 gint               m,
-                 guint              option)
+                 size_t             pinyin_begin,
+                 size_t             pinyin_len,
+                 int                m,
+                 unsigned int       option)
 {
     g_assert (pinyin_begin < pinyin.size ());
     g_assert (pinyin_len <= pinyin.size () - pinyin_begin);
@@ -536,9 +538,9 @@ Database::query (const PinyinArray &pinyin,
     /* prepare sql */
     Conditions conditions;
 
-    for (guint i = 0; i < pinyin_len; i++) {
+    for (size_t i = 0; i < pinyin_len; i++) {
         const Pinyin *p;
-        gboolean fs1, fs2;
+        bool fs1, fs2;
         p = pinyin[i + pinyin_begin];
 
         fs1 = pinyin_option_check_sheng (option, p->pinyin_id[0].sheng, p->pinyin_id[1].sheng);
@@ -565,7 +567,7 @@ Database::query (const PinyinArray &pinyin,
                                                "s%d=%d", i, p->pinyin_id[2].sheng);
                 }
                 else {
-                    gint len = conditions.size ();
+                    size_t len = conditions.size ();
                     conditions.triple ();
                     conditions.appendPrintf (0, len,
                                                "s%d=%d", i, p->pinyin_id[0].sheng);
@@ -618,7 +620,7 @@ Database::query (const PinyinArray &pinyin,
 
 
     m_buffer.clear ();
-    for (guint i = 0; i < conditions.size (); i++) {
+    for (size_t i = 0; i < conditions.size (); i++) {
         if (G_UNLIKELY (i == 0))
             m_buffer << "  (" << conditions[i] << ")\n";
         else
@@ -626,7 +628,7 @@ Database::query (const PinyinArray &pinyin,
     }
 
     m_sql.clear ();
-    gint id = pinyin_len - 1;
+    int id = pinyin_len - 1;
     m_sql << "SELECT * FROM ("
                 "SELECT 0 AS user_freq, * FROM main.py_phrase_" << id << " WHERE " << m_buffer << " UNION ALL "
                 "SELECT * FROM userdb.py_phrase_" << id << " WHERE " << m_buffer << ") "
@@ -653,7 +655,7 @@ Database::phraseWhereSql (const Phrase & p, String & sql)
     sql << " WHERE";
     sql << " s0=" << p.pinyin_id[0].sheng
         << " AND y0=" << p.pinyin_id[0].yun;
-    for (guint i = 1; i < p.len; i++) {
+    for (size_t i = 1; i < p.len; i++) {
         sql << " AND s" << i << '=' << p.pinyin_id[i].sheng
             << " AND y" << i << '=' << p.pinyin_id[i].yun;
     }
@@ -669,7 +671,7 @@ Database::phraseSql (const Phrase & p, String & sql)
         << ",\"" << p.phrase << '"'         /* phrase */
         << ','   << p.freq;                 /* freq */
 
-    for (guint i = 0; i < p.len; i++) {
+    for (size_t i = 0; i < p.len; i++) {
         sql << ',' << p.pinyin_id[i].sheng << ',' << p.pinyin_id[i].yun;
     }
 
@@ -688,7 +690,7 @@ Database::commit (const PhraseArray  &phrases)
     Phrase phrase = {""};
 
     m_sql = "BEGIN TRANSACTION;\n";
-    for (guint i = 0; i < phrases.size (); i++) {
+    for (size_t i = 0; i < phrases.size (); i++) {
         phrase += phrases[i];
         phraseSql (phrases[i], m_sql);
     }

@@ -143,8 +143,8 @@ Config::readDefaultValues ()
     m_impl->m_option = PINYIN_DEFAULT_OPTION;
     m_impl->m_option_mask = PINYIN_INCOMPLETE_PINYIN | PINYIN_CORRECT_ALL;
     m_impl->m_double_pinyin_schema = 0;
-    m_impl->m_mode_simp = TRUE;
-    m_impl->m_special_phrases = TRUE;
+    m_impl->m_mode_simp = true;
+    m_impl->m_special_phrases = true;
     m_impl->m_bopomofo_keyboard_mapping = 0;
 }
 
@@ -214,7 +214,7 @@ void
 BopomofoConfig::readDefaultValues (void)
 {
     Config::readDefaultValues ();
-    m_impl->m_special_phrases = FALSE;
+    m_impl->m_special_phrases = false;
 }
 
 };  // namespace PyZy

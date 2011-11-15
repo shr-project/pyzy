@@ -52,8 +52,8 @@ protected:
     virtual bool updatePinyin (bool all);
 
 private:
-    const Pinyin *isPinyin (gint i, gint j);
-    const Pinyin *isPinyin (gint i);
+    const Pinyin *isPinyin (int i, int j);
+    const Pinyin *isPinyin (int i);
 
 };
 

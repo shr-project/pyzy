@@ -22,7 +22,6 @@
 #ifndef __PYZY_PINYIN_PARSER_H_
 #define __PYZY_PINYIN_PARSER_H_
 
-#include <glib.h>
 #include "PyZyString.h"
 #include "PyZyPinyinArray.h"
 
@@ -30,18 +29,18 @@ namespace PyZy {
 
 class PinyinParser {
 public:
-    static guint parse (const String &pinyin,      // pinyin string
-                        gint          len,         // length of pinyin string
-                        guint         option,      // option
-                        PinyinArray  &result,      // store pinyin in result
-                        guint         max);        // max length of the result
-    static const Pinyin * isPinyin (gint sheng, gint yun, guint option);
-    static guint parseBopomofo (const std::wstring  &bopomofo,
-                                gint                 len,
-                                guint                option,
-                                PinyinArray         &result,
-                                guint                max);
-    static gboolean isBopomofoToneChar (const wchar_t ch);
+    static size_t parse (const String &pinyin,      // pinyin string
+                         size_t        len,         // length of pinyin string
+                         unsigned int  option,      // option
+                         PinyinArray  &result,      // store pinyin in result
+                         size_t        max);        // max length of the result
+    static const Pinyin * isPinyin (int sheng, int yun, unsigned int option);
+    static size_t parseBopomofo (const std::wstring  &bopomofo,
+                                 size_t               len,
+                                 unsigned int         option,
+                                 PinyinArray         &result,
+                                 size_t               max);
+    static bool isBopomofoToneChar (const wchar_t ch);
 
 };
 

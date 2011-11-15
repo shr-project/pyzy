@@ -38,10 +38,10 @@ private:
     SpecialPhraseTable (void);
 
 public:
-    gboolean lookup (const std::string &command, std::vector<std::string> &result);
+    bool lookup (const std::string &command, std::vector<std::string> &result);
 
 private:
-    gboolean load (const gchar *file);
+    bool load (const char *file);
 
 public:
     static SpecialPhraseTable & instance (void) { return m_instance; }

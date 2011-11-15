@@ -268,8 +268,8 @@ def gen_macros():
     print
 
 def gen_option_check(name, fuzzy):
-    print '''static gboolean
-%s (guint option, gint id, gint fid)
+    print '''static bool
+%s (unsigned int option, int id, int fid)
 {
     switch ((id << 16) | fid) {''' % name
     for y1, y2 in fuzzy:

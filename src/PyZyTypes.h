@@ -22,8 +22,6 @@
 #ifndef __PYZY_TYPES_H_
 #define __PYZY_TYPES_H_
 
-#include <glib.h>
-
 namespace PyZy {
 
 #define PINYIN_ID_VOID  (-1)
@@ -127,16 +125,16 @@ namespace PyZy {
 #define PINYIN_FUZZY_ALL            (0x1ffffe00)
 
 struct Pinyin {
-    const gchar *text;
+    const char *text;
     const wchar_t *bopomofo;
-    const gchar *sheng;
-    const gchar *yun;
+    const char *sheng;
+    const char *yun;
     struct {
-        guint8 sheng;
-        guint8 yun;
+        unsigned char sheng;
+        unsigned char yun;
     } pinyin_id[3];
-    const guint len;
-    const guint flags;
+    const size_t len;
+    const unsigned int flags;
 };
 
 #define MAX_UTF8_LEN 6

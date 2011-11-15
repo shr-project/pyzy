@@ -42,17 +42,17 @@ class Database;
 class Query {
 public:
     Query (const PinyinArray    & pinyin,
-           guint                  pinyin_begin,
-           guint                  pinyin_len,
-           guint                  option);
+           size_t                 pinyin_begin,
+           size_t                 pinyin_len,
+           unsigned int           option);
     ~Query (void);
-    gint fill (PhraseArray &phrases, gint count);
+    int fill (PhraseArray &phrases, int count);
 
 private:
     const PinyinArray & m_pinyin;
-    guint m_pinyin_begin;
-    guint m_pinyin_len;
-    guint m_option;
+    size_t m_pinyin_begin;
+    size_t m_pinyin_len;
+    unsigned int m_option;
     SQLStmtPtr m_stmt;
 };
 
@@ -66,10 +66,10 @@ public:
     static void init (const std::string & data_dir);
 
     SQLStmtPtr query (const PinyinArray   & pinyin,
-                      guint                 pinyin_begin,
-                      guint                 pinyin_len,
-                      gint                  m,
-                      guint                 option);
+                      size_t                pinyin_begin,
+                      size_t                pinyin_len,
+                      int                   m,
+                      unsigned int          option);
     void commit (const PhraseArray  & phrases);
     void remove (const Phrase & phrase);
 
@@ -86,22 +86,22 @@ public:
     }
 
 private:
-    gboolean open (void);
-    gboolean loadUserDB (void);
-    gboolean saveUserDB (void);
+    bool open (void);
+    bool loadUserDB (void);
+    bool saveUserDB (void);
     void prefetch (void);
     void phraseSql (const Phrase & p, String & sql);
     void phraseWhereSql (const Phrase & p, String & sql);
-    gboolean executeSQL (const gchar *sql, sqlite3 *db = NULL);
+    bool executeSQL (const char *sql, sqlite3 *db = NULL);
     void modified (void);
-    static gboolean timeoutCallback (gpointer data);
+    static gboolean timeoutCallback (void * data);
 
 private:
     sqlite3 *m_db;              /* sqlite3 database */
 
     String m_sql;        /* sql stmt */
     String m_buffer;     /* temp buffer */
-    guint m_timeout_id;
+    unsigned int m_timeout_id;
     GTimer *m_timer;
     String m_user_data_dir;
 

@@ -58,7 +58,7 @@ def get_records():
     return maxlen, records
 
 def main():
-    print "static const gchar *simp_to_trad[][2] = {"
+    print "static const char *simp_to_trad[][2] = {"
     maxlen, records = get_records()
     for s, ts in records:
         print '    { "%s", "%s" },' % (s, ts)

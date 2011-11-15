@@ -56,8 +56,8 @@ protected:
     virtual void updatePinyin ();
     virtual void updatePreeditText ();
 
-    bool processBopomofo (guint keyval, guint keycode, guint modifiers);
-    gint keyvalToBopomofo(gint ch);
+    bool processBopomofo (unsigned int keyval, unsigned int keycode, unsigned int modifiers);
+    int keyvalToBopomofo(int ch);
 };
 
 };

@@ -53,11 +53,11 @@ public:
     /* API of InputContext */
     virtual void reset (void);
     
-    bool selectCandidate (unsigned int i);
-    bool focusCandidate (unsigned int i);
+    bool selectCandidate (size_t i);
+    bool focusCandidate (size_t i);
     bool focusCandidatePrevious ();
     bool focusCandidateNext ();
-    bool resetCandidate (unsigned int i);
+    bool resetCandidate (size_t i);
     bool unselectCandidates ();
 
     /* inline functions */
@@ -70,8 +70,8 @@ public:
     virtual std::string restText (void) const { return m_preedit_text.rest_text; }
     virtual std::string auxiliaryText (void) const { return m_auxiliary_text; }
     virtual std::vector<Candidate> candidates () const { return m_candidates; }
-    virtual unsigned int cursor () const { return m_cursor; }
-    virtual unsigned int focusedCandidate () const { return m_focused_candidate; }
+    virtual size_t cursor () const { return m_cursor; }
+    virtual size_t focusedCandidate () const { return m_focused_candidate; }
 
 protected:
     virtual void resetContext (void);
@@ -89,31 +89,31 @@ protected:
         m_phrase_editor.update (m_pinyin);
     }
 
-    const gchar * textAfterPinyin () const
+    const char * textAfterPinyin () const
     {
-        return (const gchar *)m_text + m_pinyin_len;
+        return (const char *)m_text + m_pinyin_len;
     }
 
-    const gchar * textAfterPinyin (guint i) const
+    const char * textAfterPinyin (size_t i) const
     {
         g_assert (i <= m_pinyin.size ());
         if ( G_UNLIKELY (i == 0))
             return m_text;
         i--;
-        return (const gchar *)m_text + m_pinyin[i].begin + m_pinyin[i].len;
+        return (const char *)m_text + m_pinyin[i].begin + m_pinyin[i].len;
     }
 
-    const gchar * textAfterCursor () const
+    const char * textAfterCursor () const
     {
-        return (const gchar *)m_text + m_cursor;
+        return (const char *)m_text + m_cursor;
     }
 
     /* variables */
     Config                     &m_config;
-    guint                       m_cursor;
-    guint                       m_focused_candidate;
+    size_t                      m_cursor;
+    size_t                      m_focused_candidate;
     PinyinArray                 m_pinyin;
-    guint                       m_pinyin_len;
+    size_t                      m_pinyin_len;
     String                      m_buffer;
     PhraseEditor                m_phrase_editor;
     std::vector<std::string>    m_special_phrases;

@@ -29,10 +29,10 @@ namespace PyZy {
 
 struct PinyinSegment {
     const Pinyin *pinyin;
-    guint begin;
-    guint len;
+    size_t begin;
+    size_t len;
 
-    PinyinSegment (const Pinyin *pinyin = NULL, guint begin = 0, guint len = 0)
+    PinyinSegment (const Pinyin *pinyin = NULL, size_t begin = 0, size_t len = 0)
         : pinyin (pinyin), begin (begin), len (len) { }
 
     operator const Pinyin * (void) const
@@ -45,12 +45,12 @@ struct PinyinSegment {
         return pinyin;
     }
 
-    gboolean operator == (const PinyinSegment & p) const
+    bool operator == (const PinyinSegment & p) const
     {
         return (pinyin == p.pinyin) && (begin == p.begin) && (len == p.len);
     }
 
-    gboolean operator == (const Pinyin *p) const
+    bool operator == (const Pinyin *p) const
     {
         return pinyin == p;
     }
@@ -58,12 +58,12 @@ struct PinyinSegment {
 
 class PinyinArray: public std::vector<PinyinSegment> {
 public:
-    PinyinArray (guint init_size = 0)
+    PinyinArray (size_t init_size = 0)
     {
         std::vector<PinyinSegment>::reserve (init_size);
     }
 
-    void append (const Pinyin *pinyin, guint begin, guint len)
+    void append (const Pinyin *pinyin, size_t begin, size_t len)
     {
         push_back (PinyinSegment (pinyin, begin, len));
     }

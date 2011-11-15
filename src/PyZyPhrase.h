@@ -30,14 +30,14 @@ namespace PyZy {
 #define PHRASE_LEN_IN_BYTE (MAX_UTF8_LEN * (MAX_PHRASE_LEN + 1))
 
 struct Phrase {
-    gchar phrase[PHRASE_LEN_IN_BYTE];
-    guint freq;
-    guint user_freq;
+    char phrase[PHRASE_LEN_IN_BYTE];
+    unsigned int freq;
+    unsigned int user_freq;
     struct {
-        guint8 sheng;
-        guint8 yun;
+        unsigned char sheng;
+        unsigned char yun;
     } pinyin_id[MAX_PHRASE_LEN];
-    guint len;
+    size_t len;
 
     void reset (void)
     {
@@ -47,7 +47,7 @@ struct Phrase {
         len = 0;
     }
 
-    gboolean empty (void) const
+    bool empty (void) const
     {
         return len == 0;
     }
@@ -61,7 +61,7 @@ struct Phrase {
         return *this;
     }
 
-    operator const gchar * (void) const
+    operator const char * (void) const
     {
         return phrase;
     }

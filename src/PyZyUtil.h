@@ -35,7 +35,6 @@
 #include <sys/utsname.h>
 #include <cstdlib>
 #include <string>
-#include <glib/gtypes.h>
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
 #  include <memory>
@@ -54,14 +53,16 @@ namespace std {
 #endif  // __GXX_EXPERIMENTAL_CXX0X__PYZY_
 
 namespace PyZy {
-
+// for Unicode
+typedef unsigned int unichar;
+    
 class UUID {
 public:
     UUID (void)
     {
         uuid_t u;
 #if defined(HAVE_UUID_CREATE)
-        gchar* uuid;
+        char *uuid;
         uuid_create (&u, 0);
         uuid_to_string (&u, &uuid, 0);
         g_strlcpy (m_uuid, uuid, sizeof(m_uuid));
@@ -72,13 +73,13 @@ public:
 #endif
     }
 
-    operator const gchar * (void) const
+    operator const char * (void) const
     {
         return m_uuid;        
     }
 
 private:
-    gchar m_uuid[256];
+    char m_uuid[256];
 };
 
 class Uname {
@@ -88,14 +89,14 @@ public:
         uname (&m_buf);
     }
 
-    const gchar *hostname (void) const { return m_buf.nodename; }
+    const char *hostname (void) const { return m_buf.nodename; }
 private:
     struct utsname m_buf;
 };
 
 class Hostname : public Uname {
 public:
-    operator const gchar * (void) const
+    operator const char * (void) const
     {
         return hostname ();
     }
@@ -103,14 +104,14 @@ public:
 
 class Env : public std::string {
 public:
-    Env (const gchar *name)
+    Env (const char *name)
     {
-        gchar *str;
+        char *str;
         str = std::getenv (name);
         assign (str != NULL ? str : "");
     }
 
-    operator const gchar *(void) const
+    operator const char *(void) const
     {
         return c_str();
     }

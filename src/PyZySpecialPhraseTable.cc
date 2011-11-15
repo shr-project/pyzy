@@ -30,7 +30,7 @@ SpecialPhraseTable SpecialPhraseTable::m_instance;
 
 class StaticSpecialPhrase : public SpecialPhrase {
 public:
-    StaticSpecialPhrase (const std::string &text, guint pos) :
+    StaticSpecialPhrase (const std::string &text, size_t pos) :
         SpecialPhrase (pos), m_text (text) { }
     ~StaticSpecialPhrase (void) { }
 
@@ -42,7 +42,7 @@ private:
 
 SpecialPhraseTable::SpecialPhraseTable (void)
 {
-    gchar * path = g_build_filename (g_get_user_config_dir (),
+    char * path = g_build_filename (g_get_user_config_dir (),
                         "ibus", "pinyin", "phrases.txt", NULL);
 
     load ("phrases.txt") ||
@@ -51,7 +51,7 @@ SpecialPhraseTable::SpecialPhraseTable (void)
     g_free (path);
 }
 
-gboolean
+bool
 SpecialPhraseTable::lookup (const std::string         &command,
                             std::vector<std::string>  &result)
 {
@@ -65,14 +65,14 @@ SpecialPhraseTable::lookup (const std::string         &command,
     return result.size () > 0;
 }
 
-gboolean
-SpecialPhraseTable::load (const gchar *file)
+bool
+SpecialPhraseTable::load (const char *file)
 {
     m_map.clear ();
 
     std::ifstream in (file);
     if (in.fail ())
-        return FALSE;
+        return false;
 
     std::string line;
     while (!in.eof ()) {
@@ -97,7 +97,7 @@ SpecialPhraseTable::load (const gchar *file)
             m_map.insert (Map::value_type (command, phrase));
         }
     }
-    return TRUE;
+    return true;
 }
 
 };  // namespace PyZy

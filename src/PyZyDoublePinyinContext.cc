@@ -56,7 +56,7 @@ DoublePinyinContext::~DoublePinyinContext ()
 bool
 DoublePinyinContext::insert (char ch)
 {
-    gint id;
+    int id;
     /* is full */
     if (G_UNLIKELY (m_text.length () >= MAX_PINYIN_LEN))
         return true;
@@ -323,13 +323,13 @@ DoublePinyinContext::moveCursorToEnd (void)
 }
 
 inline const Pinyin *
-DoublePinyinContext::isPinyin (gint i)
+DoublePinyinContext::isPinyin (int i)
 {
     if ((m_config.option () & PINYIN_INCOMPLETE_PINYIN) == 0) {
         return NULL;
     }
 
-    gint8 sheng = ID_TO_SHENG (i);
+    char sheng = ID_TO_SHENG (i);
 
     if (sheng == PINYIN_ID_VOID) {
         return NULL;
@@ -339,11 +339,11 @@ DoublePinyinContext::isPinyin (gint i)
 }
 
 inline const Pinyin *
-DoublePinyinContext::isPinyin (gint i, gint j)
+DoublePinyinContext::isPinyin (int i, int j)
 {
     const Pinyin *pinyin;
-    gint8 sheng = ID_TO_SHENG (i);
-    const gint8 *yun = ID_TO_YUNS (j);
+    char sheng = ID_TO_SHENG (i);
+    const char *yun = ID_TO_YUNS (j);
 
     if (sheng == PINYIN_ID_VOID || yun[0] == PINYIN_ID_VOID)
         return NULL;
@@ -386,7 +386,7 @@ DoublePinyinContext::isPinyin (gint i, gint j)
 inline bool
 DoublePinyinContext::updatePinyin (bool all)
 {
-    gboolean retval = false;
+    bool retval = false;
 
     if (all &&
         (m_pinyin_len != 0 || !m_pinyin.empty ())) {
@@ -408,7 +408,7 @@ DoublePinyinContext::updatePinyin (bool all)
     }
 
     if (m_pinyin_len < m_cursor) {
-        guint len = m_pinyin_len;
+        size_t len = m_pinyin_len;
         if (m_pinyin.empty () == false &&
             m_pinyin.back ()->flags & PINYIN_INCOMPLETE_PINYIN) {
             const Pinyin *pinyin = isPinyin (ID (m_text[m_pinyin_len -1]),ID (m_text[m_pinyin_len]));

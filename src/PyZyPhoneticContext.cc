@@ -41,7 +41,7 @@ PhoneticContext::~PhoneticContext ()
 bool
 PhoneticContext::updateSpecialPhrases (void)
 {
-    guint size = m_special_phrases.size ();
+    size_t size = m_special_phrases.size ();
     m_special_phrases.clear ();
 
     if (!m_config.specialPhrases ())
@@ -50,8 +50,8 @@ PhoneticContext::updateSpecialPhrases (void)
     if (!m_selected_special_phrase.empty ())
         return false;
 
-    guint begin = m_phrase_editor.cursorInChar ();
-    guint end = m_cursor;
+    size_t begin = m_phrase_editor.cursorInChar ();
+    size_t end = m_cursor;
 
     if (begin < end) {
         SpecialPhraseTable::instance ().lookup (
@@ -80,7 +80,7 @@ PhoneticContext::updateLookupTable (void)
 {
     m_candidates.clear ();
 
-    for (gint i = 0; i < m_special_phrases.size (); ++i) {
+    for (size_t i = 0; i < m_special_phrases.size (); ++i) {
         Candidate candidate;
         candidate.text = m_special_phrases[i];
         candidate.type = SPECIAL_PHRASE;
@@ -88,7 +88,7 @@ PhoneticContext::updateLookupTable (void)
     }
 
     const PhraseArray & phrase_array = m_phrase_editor.candidates ();
-    for (gint i = 0; i < phrase_array.size (); ++i) {
+    for (size_t i = 0; i < phrase_array.size (); ++i) {
         CandidateType candidate_type;
 
         if (i < m_special_phrases.size ()) {
@@ -155,7 +155,7 @@ PhoneticContext::focusCandidateNext ()
 }
 
 bool
-PhoneticContext::focusCandidate (unsigned int i)
+PhoneticContext::focusCandidate (size_t i)
 {
     if (G_UNLIKELY (i >= m_candidates.size ())) {
         g_warning ("Too big index. Can't focus to selected candidate.");
@@ -177,7 +177,7 @@ PhoneticContext::update ()
 }
 
 bool
-PhoneticContext::selectCandidate (unsigned int i)
+PhoneticContext::selectCandidate (size_t i)
 {
     if (i >= m_candidates.size ()) {
         g_warning ("selectCandidate(%ud): Too big index!\n", i);
@@ -216,7 +216,7 @@ PhoneticContext::selectCandidate (unsigned int i)
 }
 
 bool
-PhoneticContext::resetCandidate (unsigned int i)
+PhoneticContext::resetCandidate (size_t i)
 {
     if (i < m_special_phrases.size ()) {
         return false;

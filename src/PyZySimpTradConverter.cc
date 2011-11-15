@@ -54,10 +54,10 @@ public:
         opencc_close(m_od);
     }
 
-    void convert (const gchar *in, String &out)
+    void convert (const char *in, String &out)
     {
-        glong n_char;
-        gunichar *in_ucs4 = g_utf8_to_ucs4_fast (in, -1, &n_char);
+        long n_char;
+        unichar *in_ucs4 = g_utf8_to_ucs4_fast (in, -1, &n_char);
 
         ucs4_t *pinbuf = (ucs4_t *)in_ucs4;
         size_t inbuf_left = n_char;
@@ -68,7 +68,7 @@ public:
             if (retval == (size_t) -1) {
                 /* append left chars in pinbuf */
                 g_warning ("opencc_convert return failed");
-                out << (gunichar *) pinbuf;
+                out << (unichar *) pinbuf;
                 break;
             }
             *poutbuf = L'\0';
@@ -78,11 +78,11 @@ public:
     }
 private:
     opencc_t m_od;
-    gunichar m_buffer[BUFFER_SIZE + 1];
+    unichar m_buffer[BUFFER_SIZE + 1];
 };
 
 void
-SimpTradConverter::simpToTrad (const gchar *in, String &out)
+SimpTradConverter::simpToTrad (const char *in, String &out)
 {
     static opencc opencc;
     opencc.convert (in, out);
@@ -90,7 +90,7 @@ SimpTradConverter::simpToTrad (const gchar *in, String &out)
 
 #else
 
-static gint _xcmp (const gchar *p1, const gchar *p2, const gchar *str)
+static int _xcmp (const char *p1, const char *p2, const char *str)
 {
     for (;;) {
         // both reach end
@@ -112,10 +112,10 @@ static gint _xcmp (const gchar *p1, const gchar *p2, const gchar *str)
     };
 }
 
-static gint _cmp (gconstpointer p1, gconstpointer p2)
+static int _cmp (const void * p1, const void * p2)
 {
-    const gchar **pp = (const gchar **) p1;
-    const gchar **s2 = (const gchar **) p2;
+    const char **pp = (const char **) p1;
+    const char **s2 = (const char **) p2;
 
     return _xcmp (pp[0], pp[1], s2[0]);
 }
@@ -123,12 +123,12 @@ static gint _cmp (gconstpointer p1, gconstpointer p2)
 #include "PyZySimpTradConverterTable.h"
 
 void
-SimpTradConverter::simpToTrad (const gchar *in, String &out)
+SimpTradConverter::simpToTrad (const char *in, String &out)
 {
-    const gchar *pend;
-    const gchar *pp[2];
-    glong len;
-    glong begin;
+    const char *pend;
+    const char *pp[2];
+    size_t len;
+    size_t begin;
 
     if (!g_utf8_validate (in, -1 , NULL)) {
         g_warning ("\%s\" is not an utf8 string!", in);
@@ -141,12 +141,12 @@ SimpTradConverter::simpToTrad (const gchar *in, String &out)
     pp[0] = in;
 
     while (pp[0] != pend) {
-        glong slen  = std::min (len - begin, (glong) SIMP_TO_TRAD_MAX_LEN); // the length of sub string in character
+        size_t slen  = std::min (len - begin, static_cast<size_t>(SIMP_TO_TRAD_MAX_LEN)); // the length of sub string in character
         pp[1] = g_utf8_offset_to_pointer (pp[0], slen);    // the end of sub string
 
         for (;;) {
-            const gchar **result;
-            result = (const gchar **) std::bsearch (pp, simp_to_trad,
+            const char **result;
+            result = (const char **) std::bsearch (pp, simp_to_trad,
                                             G_N_ELEMENTS (simp_to_trad), sizeof (simp_to_trad[0]),
                                             _cmp);
 

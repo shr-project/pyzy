@@ -24,7 +24,7 @@
 
 namespace PyZy {
 
-PinyinContext::PinyinContext (Config & config, PhoneticContext::Observer *observer)
+PinyinContext::PinyinContext (Config & config, PhoneticContext::Observer * observer)
     : PhoneticContext (config, observer)
 {
 }
@@ -44,7 +44,7 @@ PinyinContext::commit (CommitType type)
     if (G_LIKELY(type == TYPE_CONVERTED)) {
         m_buffer << m_phrase_editor.selectedString ();
 
-        const gchar *p;
+        const char *p;
 
         if (m_selected_special_phrase.empty ()) {
             p = textAfterPinyin (m_buffer.utf8Length ());
@@ -76,10 +76,10 @@ PinyinContext::updatePreeditText ()
         return;
     }
 
-    guint edit_begin_word = 0;
-    guint edit_end_word = 0;
-    guint edit_begin_byte = 0;
-    guint edit_end_byte = 0;
+    size_t edit_begin_word = 0;
+    size_t edit_end_word = 0;
+    size_t edit_begin_byte = 0;
+    size_t edit_end_byte = 0;
 
     m_buffer.clear ();
     m_preedit_text.clear ();
@@ -101,8 +101,8 @@ PinyinContext::updatePreeditText ()
         edit_begin_byte = m_buffer.size ();
 
         if (m_candidates.size () > 0) {
-            guint index = m_focused_candidate;
-      
+            size_t index = m_focused_candidate;
+
             if (index < m_special_phrases.size ()) {
                 m_buffer << m_special_phrases[index];
                 edit_end_word = m_buffer.utf8Length ();
@@ -126,11 +126,11 @@ PinyinContext::updatePreeditText ()
                     m_buffer << textAfterPinyin (edit_end_word);
                 }
                 else {
-                    guint candidate_end = edit_begin_word + candidate.len;
+                    size_t candidate_end = edit_begin_word + candidate.len;
 
                     m_buffer << m_pinyin[edit_begin_word]->sheng << m_pinyin[edit_begin_word]->yun;
           
-                    for (guint i = edit_begin_word + 1; i < candidate_end; i++) {
+                    for (size_t i = edit_begin_word + 1; i < candidate_end; i++) {
                         m_buffer << ' ' << m_pinyin[i]->sheng << m_pinyin[i]->yun;
                     }
                     m_buffer << '|' << textAfterPinyin (candidate_end);
@@ -167,12 +167,12 @@ PinyinContext::updateAuxiliaryText (void)
 
     if (m_selected_special_phrase.empty ()) {
         if (m_focused_candidate < m_special_phrases.size ()) {
-            guint begin = m_phrase_editor.cursorInChar ();
+            size_t begin = m_phrase_editor.cursorInChar ();
             m_buffer << m_text.substr (begin, m_cursor - begin)
                      << '|' << textAfterCursor ();
         }
         else {
-            for (guint i = m_phrase_editor.cursor (); i < m_pinyin.size (); ++i) {
+            for (size_t i = m_phrase_editor.cursor (); i < m_pinyin.size (); ++i) {
                 if (G_LIKELY (i != m_phrase_editor.cursor ()))
                     m_buffer << ' ';
                 const Pinyin *p = m_pinyin[i];

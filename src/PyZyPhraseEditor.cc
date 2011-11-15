@@ -41,7 +41,7 @@ PhraseEditor::~PhraseEditor (void)
 {
 }
 
-gboolean
+bool
 PhraseEditor::update (const PinyinArray &pinyin)
 {
     /* the size of pinyin must not bigger than MAX_PHRASE_LEN */
@@ -54,16 +54,16 @@ PhraseEditor::update (const PinyinArray &pinyin)
     m_selected_phrases.clear ();
     m_selected_string.truncate (0);
     updateCandidates ();
-    return TRUE;
+    return true;
 }
 
-gboolean
-PhraseEditor::resetCandidate (guint i)
+bool
+PhraseEditor::resetCandidate (size_t i)
 {
     Database::instance ().remove (m_candidates[i]);
 
     updateCandidates ();
-    return TRUE;
+    return true;
 }
 
 void
@@ -73,11 +73,11 @@ PhraseEditor::commit (void)
     reset ();
 }
 
-gboolean
-PhraseEditor::selectCandidate (guint i)
+bool
+PhraseEditor::selectCandidate (size_t i)
 {
     if (G_UNLIKELY (i >= m_candidates.size ()))
-        return FALSE;
+        return false;
 
     if (G_LIKELY (i == 0)) {
         m_selected_phrases.insert (m_selected_phrases.end (),
@@ -99,7 +99,7 @@ PhraseEditor::selectCandidate (guint i)
     }
 
     updateCandidates ();
-    return TRUE;
+    return true;
 }
 
 void
@@ -115,7 +115,7 @@ PhraseEditor::updateCandidates (void)
     if (G_LIKELY (m_candidate_0_phrases.size () > 1)) {
         Phrase phrase;
         phrase.reset ();
-        for (guint i = 0; i < m_candidate_0_phrases.size (); i++)
+        for (size_t i = 0; i < m_candidate_0_phrases.size (); i++)
             phrase += m_candidate_0_phrases[i];
         m_candidates.push_back (phrase);
     }
@@ -130,8 +130,8 @@ PhraseEditor::updateCandidates (void)
 void
 PhraseEditor::updateTheFirstCandidate (void)
 {
-    guint begin;
-    guint end;
+    size_t begin;
+    size_t end;
 
     m_candidate_0_phrases.clear ();
 
@@ -142,7 +142,7 @@ PhraseEditor::updateTheFirstCandidate (void)
     end = m_pinyin.size ();
 
     while (begin != end) {
-        gint ret;
+        int ret;
         Query query (m_pinyin,
                      begin,
                      end - begin,
@@ -153,21 +153,21 @@ PhraseEditor::updateTheFirstCandidate (void)
     }
 }
 
-gboolean
+bool
 PhraseEditor::fillCandidates (void)
 {
     if (G_UNLIKELY (m_query.get () == NULL)) {
-        return FALSE;
+        return false;
     }
 
-    gint ret = m_query->fill (m_candidates, FILL_GRAN);
+    int ret = m_query->fill (m_candidates, FILL_GRAN);
 
     if (G_UNLIKELY (ret < FILL_GRAN)) {
         /* got all candidates from query */
         m_query.reset ();
     }
 
-    return ret > 0 ? TRUE : FALSE;
+    return ret > 0 ? true : false;
 }
 
 };  // namespace PyZy

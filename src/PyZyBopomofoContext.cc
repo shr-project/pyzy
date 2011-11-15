@@ -28,7 +28,7 @@
 namespace PyZy {
 #include "PyZyBopomofoKeyboard.h"
 
-const static gchar * bopomofo_select_keys[] = {
+const static char * bopomofo_select_keys[] = {
     "1234567890",
     "asdfghjkl;",
     "1qaz2wsxed",
@@ -116,7 +116,7 @@ BopomofoContext::removeWordBefore (void)
     if (G_UNLIKELY (m_cursor == 0))
         return false;
 
-    guint cursor;
+    size_t cursor;
 
     if (G_UNLIKELY (m_cursor > m_pinyin_len)) {
         cursor = m_pinyin_len;
@@ -271,16 +271,16 @@ BopomofoContext::updateAuxiliaryText (void)
     m_buffer.clear ();
 
     if (m_selected_special_phrase.empty ()) {
-        guint si = 0;
-        guint m_text_len = m_text.length();
-        for (guint i = m_phrase_editor.cursor (); i < m_pinyin.size (); ++i) {
+        size_t si = 0;
+        size_t m_text_len = m_text.length();
+        for (size_t i = m_phrase_editor.cursor (); i < m_pinyin.size (); ++i) {
             if (G_LIKELY (i != m_phrase_editor.cursor ()))
                 m_buffer << ',';
-            m_buffer << (gunichar *)m_pinyin[i]->bopomofo;
-            for (guint sj = 0; m_pinyin[i]->bopomofo[sj] == bopomofo_char[keyvalToBopomofo(m_text.c_str()[si])] ; si++,sj++);
+            m_buffer << (unichar *)m_pinyin[i]->bopomofo;
+            for (size_t sj = 0; m_pinyin[i]->bopomofo[sj] == bopomofo_char[keyvalToBopomofo(m_text.c_str()[si])] ; si++,sj++);
         
             if (si < m_text_len) {
-                gint ch = keyvalToBopomofo(m_text.c_str()[si]);
+                int ch = keyvalToBopomofo(m_text.c_str()[si]);
                 if (ch >= BOPOMOFO_TONE_2 && ch <= BOPOMOFO_TONE_5) {
                     m_buffer.appendUnichar(bopomofo_char[ch]);
                     ++si;
@@ -289,7 +289,7 @@ BopomofoContext::updateAuxiliaryText (void)
         }
 
         for (String::iterator i = m_text.begin () + m_pinyin_len; i != m_text.end (); i++) {
-            if (m_cursor == (guint)(i - m_text.begin ()))
+            if (m_cursor == (size_t)(i - m_text.begin ()))
                 m_buffer << '|';
             m_buffer.appendUnichar (bopomofo_char[keyvalToBopomofo (*i)]);
         }
@@ -317,7 +317,7 @@ BopomofoContext::commit (CommitType type)
     if (G_LIKELY (type == TYPE_CONVERTED)) {
         m_buffer << m_phrase_editor.selectedString ();
 
-        const gchar *p;
+        const char *p;
 
         if (m_selected_special_phrase.empty ()) {
             p = textAfterPinyin (m_buffer.utf8Length ());
@@ -328,15 +328,15 @@ BopomofoContext::commit (CommitType type)
         }
 
         while (*p != '\0') {
-            m_buffer.appendUnichar ((gunichar)bopomofo_char[keyvalToBopomofo (*p++)]);
+            m_buffer.appendUnichar ((unichar)bopomofo_char[keyvalToBopomofo (*p++)]);
         }
 
         m_phrase_editor.commit ();
     }
     else if (type == TYPE_PHONETIC) {
-        const gchar *p = m_text;
+        const char *p = m_text;
         while (*p != '\0') {
-            m_buffer.appendUnichar ((gunichar)bopomofo_char[keyvalToBopomofo (*p++)]);
+            m_buffer.appendUnichar ((unichar)bopomofo_char[keyvalToBopomofo (*p++)]);
         }
     } else {
         m_buffer = m_text;
@@ -358,10 +358,10 @@ BopomofoContext::updatePreeditText (void)
         return;
     }
 
-    guint edit_begin_word = 0;
-    guint edit_end_word = 0;
-    guint edit_begin_byte = 0;
-    guint edit_end_byte = 0;
+    size_t edit_begin_word = 0;
+    size_t edit_end_word = 0;
+    size_t edit_begin_byte = 0;
+    size_t edit_end_byte = 0;
 
     m_buffer.clear ();
     m_preedit_text.clear ();
@@ -383,7 +383,7 @@ BopomofoContext::updatePreeditText (void)
         edit_begin_byte = m_buffer.size ();
 
         if (m_candidates.size () > 0) {
-            guint index = m_focused_candidate;
+            size_t index = m_focused_candidate;
 
             if (index < m_special_phrases.size ()) {
                 m_buffer << m_special_phrases[index].c_str ();
@@ -405,13 +405,13 @@ BopomofoContext::updatePreeditText (void)
                     edit_end_byte = m_buffer.size ();
               
                     /* append rest text */
-                    for (const gchar *p=m_text.c_str() + m_pinyin_len; *p ;++p) {
+                    for (const char *p=m_text.c_str() + m_pinyin_len; *p ;++p) {
                         m_buffer.appendUnichar(bopomofo_char[keyvalToBopomofo(*p)]);
                     }
                 }
                 else {
-                    for (const gchar *p = m_text.c_str (); *p; ++p) {
-                        if ((guint) (p - m_text.c_str ()) == m_cursor)
+                    for (const char *p = m_text.c_str (); *p; ++p) {
+                        if ((size_t) (p - m_text.c_str ()) == m_cursor)
                             m_buffer << ' ';
                         m_buffer.appendUnichar (bopomofo_char[keyvalToBopomofo (*p)]);
                     }
@@ -423,7 +423,7 @@ BopomofoContext::updatePreeditText (void)
         else {
             edit_end_word = m_buffer.utf8Length ();
             edit_end_byte = m_buffer.size ();
-            for (const gchar *p=m_text.c_str () + m_pinyin_len; *p ; ++p) {
+            for (const char *p=m_text.c_str () + m_pinyin_len; *p ; ++p) {
                 m_buffer.appendUnichar (bopomofo_char[keyvalToBopomofo (*p)]);
             }
         }
@@ -438,20 +438,20 @@ BopomofoContext::updatePreeditText (void)
     PhoneticContext::updatePreeditText ();
 }
 
-static gint
-keyboard_cmp (gconstpointer p1, gconstpointer p2)
+static int
+keyboard_cmp (const void * p1, const void * p2)
 {
-    const gint s1 = GPOINTER_TO_INT (p1);
-    const guint8 *s2 = (const guint8 *) p2;
+    const int s1 = GPOINTER_TO_INT (p1);
+    const unsigned char *s2 = (const unsigned char *) p2;
     return s1 - s2[0];
 }
 
-gint
-BopomofoContext::keyvalToBopomofo(gint ch)
+int
+BopomofoContext::keyvalToBopomofo(int ch)
 {
-    const gint keyboard = m_config.bopomofoKeyboardMapping ();
-    const guint8 *brs;
-    brs = (const guint8 *) std::bsearch (GINT_TO_POINTER (ch),
+    const unsigned int keyboard = m_config.bopomofoKeyboardMapping ();
+    const unsigned char *brs;
+    brs = (const unsigned char *) std::bsearch (GINT_TO_POINTER (ch),
                                        bopomofo_keyboard[keyboard],
                                        G_N_ELEMENTS (bopomofo_keyboard[keyboard]),
                                        sizeof(bopomofo_keyboard[keyboard][0]),

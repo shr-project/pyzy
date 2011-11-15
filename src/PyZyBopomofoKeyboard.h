@@ -25,7 +25,7 @@
 
 #include "PyZyBopomofo.h"
 
-static const guint8
+static const unsigned char
 bopomofo_keyboard[][41][2] = {
     {
         { ',' , BOPOMOFO_E2     },

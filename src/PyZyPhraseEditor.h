@@ -43,47 +43,47 @@ public:
     const String & selectedString (void) const  { return m_selected_string; }
     const PinyinArray & pinyin (void) const     { return m_pinyin; }
     const PhraseArray & candidates (void) const { return m_candidates; }
-    guint cursor (void) const                   { return m_cursor; }
+    size_t cursor (void) const                   { return m_cursor; }
 
-    guint cursorInChar (void) const
+    size_t cursorInChar (void) const
     {
         return m_cursor == 0 ? 0 : m_pinyin[m_cursor - 1].begin + m_pinyin[m_cursor - 1].len;
     }
 
-    gboolean pinyinExistsAfterCursor (void) const
+    bool pinyinExistsAfterCursor (void) const
     {
         return m_pinyin.size () > m_cursor;
     }
 
-    const Phrase & candidate (guint i) const
+    const Phrase & candidate (size_t i) const
     {
         return m_candidates[i];
     }
 
-    gboolean fillCandidates (void);
+    bool fillCandidates (void);
 
     const PhraseArray & candidate0 (void) const
     {
         return m_candidate_0_phrases;
     }
 
-    gboolean candidateIsUserPhrase (guint i) const
+    bool candidateIsUserPhrase (size_t i) const
     {
         const Phrase & phrase = m_candidates[i];
         return phrase.len > 1 && phrase.user_freq > 0 && phrase.freq == 0;
     }
 
-    gboolean unselectCandidates (void)
+    bool unselectCandidates (void)
     {
         if (m_cursor == 0) {
-            return FALSE;
+            return false;
         }
         else {
             m_selected_phrases.clear ();
             m_selected_string.truncate (0);
             m_cursor = 0;
             updateCandidates ();
-            return TRUE;
+            return true;
         }
     }
 
@@ -98,17 +98,17 @@ public:
         m_query.reset ();
     }
 
-    gboolean update (const PinyinArray &pinyin);
-    gboolean selectCandidate (guint i);
-    gboolean resetCandidate (guint i);
+    bool update (const PinyinArray &pinyin);
+    bool selectCandidate (size_t i);
+    bool resetCandidate (size_t i);
     void commit (void);
 
-    gboolean empty (void) const
+    bool empty (void) const
     {
         return m_selected_string.empty () && m_candidate_0_phrases.empty ();
     }
 
-    operator gboolean (void) const
+    operator bool (void) const
     {
         return !empty ();
     }
@@ -123,7 +123,7 @@ private:
     String      m_selected_string;      // selected phrases, in string format
     PhraseArray m_candidate_0_phrases;  // the first candidate in phrase array format
     PinyinArray m_pinyin;
-    guint m_cursor;
+    size_t m_cursor;
     std::shared_ptr<Query> m_query;
     Config    & m_config;
 };

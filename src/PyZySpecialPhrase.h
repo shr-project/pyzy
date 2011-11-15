@@ -23,16 +23,15 @@
 #define __PYZY_SPECIAL_PHRASE_H_
 
 #include <string>
-#include <glib.h>
 
 namespace PyZy {
 
 class SpecialPhrase {
 public:
-    SpecialPhrase (guint pos) : m_position (pos) { }
+    SpecialPhrase (size_t pos) : m_position (pos) { }
     virtual ~SpecialPhrase (void) { }
 
-    guint position (void) const
+    size_t position (void) const
     {
         return m_position;
     }
@@ -40,7 +39,7 @@ public:
     virtual std::string text (void) = 0;
 
 private:
-    guint m_position;
+    size_t m_position;
 };
 
 };  // namespace PyZy

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-const static gunichar bopomofo_char[] = {
+const static unichar bopomofo_char[] = {
     L'\0',L'ㄅ',L'ㄆ',L'ㄇ',L'ㄈ',L'ㄉ',L'ㄊ',L'ㄋ',L'ㄌ',L'ㄍ',L'ㄎ',
     L'ㄏ',L'ㄐ',L'ㄑ',L'ㄒ',L'ㄓ',L'ㄔ',L'ㄕ',L'ㄖ',L'ㄗ',L'ㄘ',L'ㄙ',
 

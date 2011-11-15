@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
+#include <glib.h>
 #include "PyZyDynamicSpecialPhrase.h"
 
 namespace PyZy {
@@ -39,7 +40,7 @@ DynamicSpecialPhrase::text (void)
 
     size_t pos = 0;
     size_t pnext;
-    gint s = 0;
+    int s = 0;
     while (s != 2) {
         switch (s) {
         case 0: // expect "${"
@@ -75,23 +76,23 @@ DynamicSpecialPhrase::text (void)
 }
 
 inline const std::string
-DynamicSpecialPhrase::dec (gint d, const gchar *fmt)
+DynamicSpecialPhrase::dec (int d, const char *fmt)
 {
-    gchar string [32];
+    char string [32];
     g_snprintf (string, sizeof (string), fmt, d);
     return string;
 }
 
 inline const std::string
-DynamicSpecialPhrase::year_cn (gboolean yy)
+DynamicSpecialPhrase::year_cn (bool yy)
 {
-    static const gchar * const digits[] = {
+    static const char * const digits[] = {
         "〇", "一", "二", "三", "四",
         "五", "六", "七", "八", "九"
     };
 
-    gint year = m_time.tm_year + 1900;
-    gint bit = 0;
+    int year = m_time.tm_year + 1900;
+    int bit = 0;
     if (yy) {
         year %= 100;
         bit = 2;
@@ -109,7 +110,7 @@ DynamicSpecialPhrase::year_cn (gboolean yy)
 inline const std::string
 DynamicSpecialPhrase::month_cn (void)
 {
-    static const gchar * const month_num[] = {
+    static const char * const month_num[] = {
         "一", "二", "三", "四", "五", "六", "七", "八",
         "九", "十", "十一", "十二"
     };
@@ -119,16 +120,16 @@ DynamicSpecialPhrase::month_cn (void)
 inline const std::string
 DynamicSpecialPhrase::weekday_cn (void)
 {
-    static const gchar * const week_num[] = {
+    static const char * const week_num[] = {
         "日", "一", "二", "三", "四", "五", "六"
     };
     return week_num[m_time.tm_wday];
 }
 
 inline const std::string
-DynamicSpecialPhrase::hour_cn (guint i)
+DynamicSpecialPhrase::hour_cn (unsigned int i)
 {
-    static const gchar * const hour_num[] = {
+    static const char * const hour_num[] = {
         "零", "一", "二", "三", "四",
         "五", "六", "七", "八", "九",
         "十", "十一", "十二", "十三", "十四",
@@ -153,19 +154,19 @@ DynamicSpecialPhrase::halfhour_cn (void)
 inline const std::string
 DynamicSpecialPhrase::day_cn (void)
 {
-    static const gchar * const day_num[] = {
+    static const char * const day_num[] = {
         "", "一", "二", "三", "四",
         "五", "六", "七", "八", "九",
         "", "十","二十", "三十"
     };
-    guint day = m_time.tm_mday;
+    unsigned int day = m_time.tm_mday;
     return std::string (day_num[day / 10 + 10]) + day_num[day % 10];
 }
 
 inline const std::string
-DynamicSpecialPhrase::minsec_cn (guint i)
+DynamicSpecialPhrase::minsec_cn (unsigned int i)
 {
-    static const gchar * const num[] = {
+    static const char * const num[] = {
         "", "一", "二", "三", "四",
         "五", "六", "七", "八", "九",
         "零", "十","二十", "三十", "四十"
@@ -190,7 +191,7 @@ DynamicSpecialPhrase::variable (const std::string &name)
     if (name == "minute")   return dec (m_time.tm_min, "%02d");
     if (name == "second")   return dec (m_time.tm_sec, "%02d");
     if (name == "year_cn")      return year_cn ();
-    if (name == "year_yy_cn")   return year_cn (TRUE);
+    if (name == "year_yy_cn")   return year_cn (true);
     if (name == "month_cn")     return month_cn ();
     if (name == "day_cn")       return day_cn ();
     if (name == "weekday_cn")   return weekday_cn ();

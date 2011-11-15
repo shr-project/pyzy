@@ -11,7 +11,7 @@ def tocstr(s):
 def gen_table():
     array = []
     i = 0
-    print 'static const gchar * const'
+    print 'static const char * const'
     print 'puncts[] = {'
     for k, vs in punct_map:
         k = tocstr(k)
@@ -22,7 +22,7 @@ def gen_table():
         i += len(vs) + 2
     print '};'
     print
-    print 'static const gchar * const * const'
+    print 'static const char * const * const'
     print 'punct_table[] = {'
     for i, k in array:
         print '    &puncts[%d],    // %s' % (i, k)

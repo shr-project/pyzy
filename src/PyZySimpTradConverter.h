@@ -22,15 +22,13 @@
 #ifndef __PYZY_SIMP_TRAD_CONVERTER_H_
 #define __PYZY_SIMP_TRAD_CONVERTER_H_
 
-#include <glib.h>
-
 namespace PyZy {
 
 class String;
 
 class SimpTradConverter {
 public:
-    static void simpToTrad (const gchar *in, String &out);
+    static void simpToTrad (const char *in, String &out);
 };
 
 };  // namespace PyZy

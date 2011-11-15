@@ -29,39 +29,40 @@ namespace PyZy {
 #include "PyZyBopomofo.h"
 #include "PyZyPinyinParserTable.h"
 
-static gboolean
-check_flags (const Pinyin *pinyin, guint option)
+static bool
+check_flags (const Pinyin *pinyin, unsigned int option)
 {
     if (pinyin == NULL)
-        return FALSE;
+        return false;
 
     if (pinyin->flags != 0) {
-        guint flags;
+        unsigned int flags;
         flags = pinyin->flags & option;
         if (flags == 0)
-            return FALSE;
+            return false;
         if ((flags != pinyin->flags) && ((pinyin->flags & PINYIN_CORRECT_ALL) != 0))
-            return FALSE;
+            return false;
     }
-    return TRUE;
+    return true;
 }
 
 static int
 py_cmp (const void *p1, const void *p2)
 {
-    const gchar *str = (const gchar *) p1;
+    const char *str = (const char *) p1;
     const Pinyin *py = (const Pinyin *) p2;
 
     return std::strcmp (str, py->text);
 }
 
+// TODO(hsumita): Replace "int len" to "size_t len"
 static const Pinyin *
-is_pinyin (const gchar *p,
-           const gchar *end,
-           gint         len,
-           guint        option)
+is_pinyin (const char  *p,
+           const char  *end,
+           int          len,
+           unsigned int option)
 {
-    gchar buf[8];
+    char buf[8];
     const Pinyin *result;
 
     if (G_UNLIKELY (len > 6))
@@ -86,8 +87,9 @@ is_pinyin (const gchar *p,
 
     for (; len > 0; len --) {
         buf[len] = 0;
+
         result = (const Pinyin *) std::bsearch (buf, pinyin_table, G_N_ELEMENTS (pinyin_table),
-                                            sizeof (Pinyin), py_cmp);
+                                                sizeof (Pinyin), py_cmp);
         if (G_UNLIKELY (check_flags (result, option))) {
             return result;
         }
@@ -120,19 +122,18 @@ need_resplit(const Pinyin *p1,
                                         sizeof (special_table[0]), sp_cmp);
 }
 
-guint
+size_t
 PinyinParser::parse (const String   &pinyin,
-                     gint            len,
-                     guint           option,
+                     size_t          len,
+                     unsigned int    option,
                      PinyinArray    &result,
-                     guint           max)
+                     size_t          max)
 {
-
-    const gchar *p;
-    const gchar *end;
+    const char *p;
+    const char *end;
     const Pinyin *py;
     const Pinyin *prev_py;
-    gchar prev_c;
+    char prev_c;
 
     result.clear ();
 
@@ -214,22 +215,22 @@ PinyinParser::parse (const String   &pinyin,
         if (G_UNLIKELY (py == NULL))
             break;
 
-        result.append (py, p - (const gchar *) pinyin, py->len);
+        result.append (py, p - (const char *) pinyin, py->len);
         p += py->len;
         prev_c = py->text[py->len - 1];
         prev_py = py;
     }
 
-    if (G_UNLIKELY (p == (const gchar *)pinyin))
+    if (G_UNLIKELY (p == (const char *)pinyin))
         return 0;
 #if 0
     if (G_UNLIKELY (*(p - 1) == '\''))
         p --;
 #endif
-    return p - (const gchar *)pinyin;
+    return p - (const char *)pinyin;
 }
 
-static const gchar * const
+static const char * const
 id_map[] = {
     "", "b", "c", "ch",
     "d", "f", "g", "h",
@@ -248,10 +249,10 @@ id_map[] = {
 };
 
 const Pinyin *
-PinyinParser::isPinyin (gint sheng, gint yun, guint option)
+PinyinParser::isPinyin (int sheng, int yun, unsigned int option)
 {
     const Pinyin *result;
-    gchar buf[16];
+    char buf[16];
 
     std::strcpy (buf, id_map[sheng]);
 
@@ -289,7 +290,7 @@ bopomofo_cmp (const void *p1, const void *p2)
     return std::wcscmp (s1, s2->bopomofo);
 }
 
-gboolean
+bool
 PinyinParser::isBopomofoToneChar (const wchar_t ch)
 {
     return ch == bopomofo_char[BOPOMOFO_TONE_2]
@@ -298,18 +299,18 @@ PinyinParser::isBopomofoToneChar (const wchar_t ch)
         || ch == bopomofo_char[BOPOMOFO_TONE_5];
 }
 
-guint
+size_t
 PinyinParser::parseBopomofo (const std::wstring &bopomofo,
-                             gint                len,
-                             guint               option,
+                             size_t              len,
+                             unsigned int        option,
                              PinyinArray        &result,
-                             guint               max)
+                             size_t              max)
 {
     std::wstring::const_iterator bpmf = bopomofo.begin();
     const std::wstring::const_iterator end = bpmf + len;
     const Pinyin **bs_res;
     wchar_t buf[MAX_BOPOMOFO_LEN + 1];
-    guint i, j;
+    size_t i, j;
 
     result.clear ();
 
@@ -321,7 +322,7 @@ PinyinParser::parseBopomofo (const std::wstring &bopomofo,
             if (bpmf + i > end)
                 continue;
 
-            for (j = 0; j < i; j++){
+            for (j = 0; j < i; j++) {
                 wchar_t key = *(bpmf + j);
 
                 if (j == i - 1 && isBopomofoToneChar (key)) {

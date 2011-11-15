@@ -97,7 +97,7 @@ FullPinyinContext::removeWordBefore (void)
     if (G_UNLIKELY (m_cursor == 0))
         return false;
 
-    guint cursor;
+    size_t cursor;
 
     if (G_UNLIKELY (m_cursor > m_pinyin_len)) {
         cursor = m_pinyin_len;

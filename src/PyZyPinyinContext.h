@@ -28,7 +28,7 @@ namespace PyZy {
 
 class PinyinContext : public PhoneticContext {
 public:
-    PinyinContext (Config & config, PhoneticContext::Observer *observer);
+    PinyinContext (Config &config, PhoneticContext::Observer *observer);
     virtual ~PinyinContext (void);
     virtual void commit (CommitType type);
 

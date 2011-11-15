@@ -25,19 +25,20 @@
 #include <glib.h>
 #include <stdarg.h>
 #include <string>
+#include "PyZyUtil.h"
 
 namespace PyZy {
 
 class String : public std::string {
 public:
     String () : std::string () { }
-    String (const gchar *str) : std::string (str) { }
+    String (const char *str) : std::string (str) { }
     String (const std::string &str) : std::string (str) { }
-    String (gint len) : std::string () { reserve (len); }
+    String (size_t len) : std::string () { reserve (len); }
 
-    String & printf (const gchar *fmt, ...)
+    String & printf (const char *fmt, ...)
     {
-        gchar *str;
+        char *str;
         va_list args;
 
         va_start (args, fmt);
@@ -49,9 +50,9 @@ public:
         return *this;
     }
 
-    String & appendPrintf (const gchar *fmt, ...)
+    String & appendPrintf (const char *fmt, ...)
     {
-        gchar *str;
+        char *str;
         va_list args;
 
         va_start (args, fmt);
@@ -64,29 +65,29 @@ public:
         return *this;
     }
 
-    String & appendUnichar (gunichar ch)
+    String & appendUnichar (unichar ch)
     {
-        gchar str[12];
-        gint len;
+        char str[12];
+        size_t len;
         len = g_unichar_to_utf8 (ch, str);
         str[len] = 0;
         append (str);
         return *this;
     }
 
-    String & insert (gint i, gchar ch)
+    String & insert (size_t i, char ch)
     {
         std::string::insert (i, 1, ch);
         return *this;
     }
 
-    String & truncate (guint len)
+    String & truncate (size_t len)
     {
         erase(len);
         return *this;
     }
 
-    String & replace (const gchar *pattern, const gchar *str)
+    String & replace (const char *pattern, const char *str)
     {
         String result;
         String::size_type pos = 0;
@@ -104,36 +105,41 @@ public:
         return *this;
     }
 
-    gsize utf8Length (void) const
+    size_t utf8Length (void) const
     {
         return g_utf8_strlen (c_str(), -1);
     }
 
-    String & operator<< (gint i)
+    String & operator<< (int i)
     {
         return appendPrintf ("%d", i);
     }
 
-    String & operator<< (guint i)
+    String & operator<< (size_t i)
+    {
+        return appendPrintf("%zd", i);
+    }
+
+    String & operator<< (unsigned int i)
     {
         return appendPrintf ("%u", i);
     }
 
-    String & operator<< (const gchar ch)
+    String & operator<< (const char ch)
     {
         append (1, ch);
         return *this;
     }
 
-    String & operator<< (const gchar *str)
+    String & operator<< (const char *str)
     {
         append (str);
         return *this;
     }
 
-    String & operator<< (const gunichar *wstr)
+    String & operator<< (const unichar *wstr)
     {
-        gchar *str;
+        char *str;
         GError *error;
         str = g_ucs4_to_utf8 (wstr, -1, NULL, NULL, &error);
         if (str == NULL) {
@@ -147,7 +153,7 @@ public:
         return *this;
     }
 
-    gchar operator[] (gint i)
+    char operator[] (size_t i)
     {
         return std::string::operator[] (i);
     }
@@ -159,21 +165,21 @@ public:
 
     String & operator<< (const String &str)
     {
-        return operator<< ((const gchar *)str);
+        return operator<< ((const char *)str);
     }
 
-    String & operator= (const gchar * str)
+    String & operator= (const char * str)
     {
         assign (str);
         return *this;
     }
 
-    operator const gchar *(void) const
+    operator const char *(void) const
     {
         return this->c_str ();
     }
 
-    operator gboolean (void) const
+    operator bool (void) const
     {
         return ! empty ();
     }

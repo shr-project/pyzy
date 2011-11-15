@@ -80,7 +80,7 @@ def tochar(ch):
 
 def gen_table():
     i = 0
-    print 'static const guint8'
+    print 'static const unsigned char'
     print 'bopomofo_keyboard[][41][2] = {'
     for keyboard in bopomofo_keyboard:
         print '    {'
