@@ -180,7 +180,7 @@ bool
 PhoneticContext::selectCandidate (size_t i)
 {
     if (i >= m_candidates.size ()) {
-        g_warning ("selectCandidate(%ud): Too big index!\n", i);
+        g_warning ("selectCandidate(%zd): Too big index!\n", i);
     }
 
     if (i < m_special_phrases.size ()) {

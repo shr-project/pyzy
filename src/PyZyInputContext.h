@@ -79,6 +79,7 @@ public:
     virtual bool moveCursorToEnd (void) = 0;
 
     virtual bool selectCandidate (size_t index) = 0;
+    virtual bool focusCandidate (size_t index) = 0;
     virtual bool focusCandidatePrevious (void) = 0;
     virtual bool focusCandidateNext (void) = 0;
     virtual bool resetCandidate (size_t index) = 0;
