@@ -18,7 +18,8 @@ confinc
 confmf
 depcomp
 libpyzy-*.tar.gz
-libpyzy.spec
+pyzy.spec
+pyzy-1.0.pc
 install-sh
 libtool
 ltmain.sh
