@@ -102,7 +102,6 @@ PinyinContext::updatePreeditText ()
 
         if (m_candidates.size () > 0) {
             size_t index = m_focused_candidate;
-
             if (index < m_special_phrases.size ()) {
                 m_buffer << m_special_phrases[index];
                 edit_end_word = m_buffer.utf8Length ();
@@ -129,7 +128,7 @@ PinyinContext::updatePreeditText ()
                     size_t candidate_end = edit_begin_word + candidate.len;
 
                     m_buffer << m_pinyin[edit_begin_word]->sheng << m_pinyin[edit_begin_word]->yun;
-          
+
                     for (size_t i = edit_begin_word + 1; i < candidate_end; i++) {
                         m_buffer << ' ' << m_pinyin[i]->sheng << m_pinyin[i]->yun;
                     }
@@ -179,7 +178,7 @@ PinyinContext::updateAuxiliaryText (void)
                 m_buffer << p->sheng
                          << p->yun;
             }
-      
+
             if (G_UNLIKELY (m_pinyin_len == m_cursor)) {
                 /* aux = pinyin + non-pinyin */
                 // cursor_pos =  m_buffer.utf8Length ();
@@ -200,7 +199,7 @@ PinyinContext::updateAuxiliaryText (void)
             m_buffer  << '|' << textAfterCursor ();
         }
     }
-  
+
     m_auxiliary_text = m_buffer;
     PhoneticContext::updateAuxiliaryText ();
 }

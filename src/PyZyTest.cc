@@ -217,7 +217,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.selectCandidate (0);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -235,7 +235,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         insertKeys (context, "aazhii");
         EXPECT_EQ (6, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("啊啊之", context.conversionText ());
         EXPECT_EQ ("i", context.restText ());
@@ -249,7 +249,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.moveCursorLeft ();
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("AA制", context.conversionText ());
         EXPECT_EQ ("i", context.restText ());
@@ -263,7 +263,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.selectCandidate (0);
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("AA制", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("i", context.restText ());
@@ -277,7 +277,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.commit (InputContext::TYPE_CONVERTED);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -407,7 +407,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.removeWordBefore ();
         EXPECT_EQ (2, context.cursor ());
-        EXPECT_EQ ("aa", context.inputText ()); 
+        EXPECT_EQ ("aa", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("啊啊", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -421,7 +421,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         insertKeys (context, "nihao");
         EXPECT_EQ (7, context.cursor ());
-        EXPECT_EQ ("aanihao", context.inputText ()); 
+        EXPECT_EQ ("aanihao", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("啊啊你好", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -435,7 +435,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.selectCandidate (1);
         EXPECT_EQ (7, context.cursor ());
-        EXPECT_EQ ("aanihao", context.inputText ()); 
+        EXPECT_EQ ("aanihao", context.inputText ());
         EXPECT_EQ ("啊啊", context.selectedText ());
         EXPECT_EQ ("你好", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -449,7 +449,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         context.commit (InputContext::TYPE_CONVERTED);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -568,7 +568,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         insertKeys (context, "aazhi");
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhi", context.inputText ()); 
+        EXPECT_EQ ("aazhi", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("AA制", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -582,7 +582,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.selectCandidate (0);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -600,7 +600,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         insertKeys (context, "aazhii");
         EXPECT_EQ (6, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("啊展翅", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -614,7 +614,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.moveCursorLeft ();
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("AA制", context.conversionText ());
         EXPECT_EQ ("i", context.restText ());
@@ -628,7 +628,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.selectCandidate (0);
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("AA制", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("i", context.restText ());
@@ -642,7 +642,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.commit (InputContext::TYPE_CONVERTED);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -773,7 +773,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.removeWordBefore ();
         EXPECT_EQ (4, context.cursor ());
-        EXPECT_EQ ("aazh", context.inputText ()); 
+        EXPECT_EQ ("aazh", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("啊张", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -787,7 +787,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         insertKeys (context, "nihk");
         EXPECT_EQ (8, context.cursor ());
-        EXPECT_EQ ("aazhnihk", context.inputText ()); 
+        EXPECT_EQ ("aazhnihk", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("啊张你好", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -801,7 +801,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.selectCandidate (1);
         EXPECT_EQ (8, context.cursor ());
-        EXPECT_EQ ("aazhnihk", context.inputText ()); 
+        EXPECT_EQ ("aazhnihk", context.inputText ());
         EXPECT_EQ ("啊", context.selectedText ());
         EXPECT_EQ ("张你好", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -815,7 +815,7 @@ TEST_F (PyZyTest, DoublePinyinBasicTest) {
         observer.clear ();
         context.commit (InputContext::TYPE_CONVERTED);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -934,7 +934,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         insertKeys (context, "aazhi");
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhi", context.inputText ()); 
+        EXPECT_EQ ("aazhi", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("妈妈好吃哦", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -948,7 +948,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.selectCandidate (0);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -966,7 +966,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         insertKeys (context, "aazhii");
         EXPECT_EQ (6, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("妈妈好吃哦哦", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -980,7 +980,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.moveCursorLeft ();
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("ㄇㄇㄈㄘㄛ ㄛ", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -994,7 +994,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.selectCandidate (0);
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhii", context.inputText ()); 
+        EXPECT_EQ ("aazhii", context.inputText ());
         EXPECT_EQ ("妈妈好吃哦", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("ㄛ", context.restText ());
@@ -1008,7 +1008,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.commit (InputContext::TYPE_CONVERTED);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -1141,7 +1141,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.removeWordBefore ();
         EXPECT_EQ (4, context.cursor ());
-        EXPECT_EQ ("aazh", context.inputText ()); 
+        EXPECT_EQ ("aazh", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("妈妈好吃", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -1155,7 +1155,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         insertKeys (context, "nihk");
         EXPECT_EQ (8, context.cursor ());
-        EXPECT_EQ ("aazhnihk", context.inputText ()); 
+        EXPECT_EQ ("aazhnihk", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("妈妈好吃是哦车", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -1169,7 +1169,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.selectCandidate (1);
         EXPECT_EQ (8, context.cursor ());
-        EXPECT_EQ ("aazhnihk", context.inputText ()); 
+        EXPECT_EQ ("aazhnihk", context.inputText ());
         EXPECT_EQ ("妈妈", context.selectedText ());
         EXPECT_EQ ("好吃是哦车", context.conversionText ());
         EXPECT_EQ ("", context.restText ());
@@ -1183,7 +1183,7 @@ TEST_F (PyZyTest, BopomofoBasicTest) {
         observer.clear ();
         context.commit (InputContext::TYPE_CONVERTED);
         EXPECT_EQ (0, context.cursor ());
-        EXPECT_EQ ("", context.inputText ()); 
+        EXPECT_EQ ("", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("", context.conversionText ());
         EXPECT_EQ ("", context.restText ());

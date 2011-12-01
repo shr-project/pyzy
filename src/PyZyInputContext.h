@@ -40,6 +40,13 @@ struct Candidate {
     CandidateType type;
 };
 
+class Candidates {
+public:
+    virtual ~Candidates () { }
+    virtual const Candidate & get (size_t index) const = 0;
+    virtual const size_t size () const = 0;
+};
+
 class InputContext {
 public:
     virtual ~InputContext (void) { }
@@ -107,7 +114,7 @@ public:
     virtual const std::string & restText (void) const = 0;
     virtual const std::string & auxiliaryText (void) const = 0;
     // TODO(hsumita): Change return value to "class Candidates".
-    virtual const std::vector<Candidate> & candidates () const = 0;
+    virtual const Candidates & candidates () const = 0;
     virtual unsigned int cursor () const = 0;
     virtual unsigned int focusedCandidate () const = 0;
 };

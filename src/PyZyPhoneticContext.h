@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include "PyZyInputContext.h"
+#include "PyZyCandidates.h"
 #include "PyZyConfig.h"
 #include "PyZyPinyinArray.h"
 #include "PyZyPhraseEditor.h"
@@ -44,7 +45,6 @@ struct Preedit {
     }
 };
 
-
 class PhoneticContext : public InputContext {
 public:
     PhoneticContext (Config & config, PhoneticContext::Observer *observer);
@@ -52,7 +52,7 @@ public:
 
     /* API of InputContext */
     virtual void reset (void);
-    
+
     bool selectCandidate (size_t i);
     bool focusCandidate (size_t i);
     bool focusCandidatePrevious ();
@@ -69,7 +69,7 @@ public:
     virtual const std::string & conversionText (void) const { return m_preedit_text.candidate_text; }
     virtual const std::string & restText (void) const { return m_preedit_text.rest_text; }
     virtual const std::string & auxiliaryText (void) const { return m_auxiliary_text; }
-    virtual const std::vector<Candidate> & candidates () const { return m_candidates; }
+    virtual const Candidates & candidates () const { return m_candidates; }
     virtual unsigned int cursor () const { return m_cursor; }
     virtual unsigned int focusedCandidate () const { return m_focused_candidate; }
 
@@ -120,8 +120,8 @@ protected:
     std::string                 m_selected_special_phrase;
     String                      m_text;
     Preedit                     m_preedit_text;
-    std::vector<Candidate>      m_candidates;
     std::string                 m_auxiliary_text;
+    ConcreteCandidates          m_candidates;
 
 private:
     PhoneticContext::Observer  *m_observer;
