@@ -80,6 +80,8 @@ public:
 
     virtual bool moveCursorRight (void) = 0;
     virtual bool moveCursorLeft (void) = 0;
+    // Currently this library treats cahracters after cursor as a one-word phrase.
+    // TODO(hsumita): Parse pinyin after cursor.
     virtual bool moveCursorRightByWord (void) = 0;
     virtual bool moveCursorLeftByWord (void) = 0;
     virtual bool moveCursorToBegin (void) = 0;
@@ -95,6 +97,8 @@ public:
     virtual bool removeCharBefore (void) = 0;
     virtual bool removeCharAfter (void) = 0;
     virtual bool removeWordBefore (void) = 0;
+    // Currently this library treats cahracters after cursor as a one-word phrase.
+    // TODO(hsumita): Parse pinyin after cursor.
     virtual bool removeWordAfter (void) = 0;
 
     virtual void bopomofoSelectMode () = 0;
@@ -113,7 +117,6 @@ public:
     virtual const std::string & conversionText (void) const = 0;
     virtual const std::string & restText (void) const = 0;
     virtual const std::string & auxiliaryText (void) const = 0;
-    // TODO(hsumita): Change return value to "class Candidates".
     virtual const Candidates & candidates () const = 0;
     virtual unsigned int cursor () const = 0;
     virtual unsigned int focusedCandidate () const = 0;

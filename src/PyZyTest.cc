@@ -203,7 +203,7 @@ TEST_F (PyZyTest, FullPinyinBasicTest) {
         observer.clear ();
         insertKeys (context, "aazhi");
         EXPECT_EQ (5, context.cursor ());
-        EXPECT_EQ ("aazhi", context.inputText ()); 
+        EXPECT_EQ ("aazhi", context.inputText ());
         EXPECT_EQ ("", context.selectedText ());
         EXPECT_EQ ("AA制", context.conversionText ());
         EXPECT_EQ ("", context.restText ());

@@ -39,7 +39,7 @@ protected:
 
 private:
     Config (const Config & obj) { }
-    
+
 public:
     virtual void readDefaultValues (void);
 

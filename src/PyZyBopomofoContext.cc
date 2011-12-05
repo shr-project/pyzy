@@ -278,7 +278,7 @@ BopomofoContext::updateAuxiliaryText (void)
                 m_buffer << ',';
             m_buffer << (unichar *)m_pinyin[i]->bopomofo;
             for (size_t sj = 0; m_pinyin[i]->bopomofo[sj] == bopomofo_char[keyvalToBopomofo(m_text.c_str()[si])] ; si++,sj++);
-        
+
             if (si < m_text_len) {
                 int ch = keyvalToBopomofo(m_text.c_str()[si]);
                 if (ch >= BOPOMOFO_TONE_2 && ch <= BOPOMOFO_TONE_5) {
@@ -374,7 +374,7 @@ BopomofoContext::updatePreeditText (void)
         m_buffer << m_selected_special_phrase;
         edit_begin_word = edit_end_word = m_buffer.utf8Length ();
         edit_begin_byte = edit_end_byte = m_buffer.size ();
-      
+
         /* append text after cursor */
         m_buffer << textAfterCursor ();
     }
@@ -403,7 +403,6 @@ BopomofoContext::updatePreeditText (void)
                         SimpTradConverter::simpToTrad (candidate, m_buffer);
                     edit_end_word = m_buffer.utf8Length ();
                     edit_end_byte = m_buffer.size ();
-              
                     /* append rest text */
                     for (const char *p=m_text.c_str() + m_pinyin_len; *p ;++p) {
                         m_buffer.appendUnichar(bopomofo_char[keyvalToBopomofo(*p)]);

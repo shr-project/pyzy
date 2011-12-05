@@ -55,7 +55,7 @@ namespace std {
 namespace PyZy {
 // for Unicode
 typedef unsigned int unichar;
-    
+
 class UUID {
 public:
     UUID (void)
@@ -75,7 +75,7 @@ public:
 
     operator const char * (void) const
     {
-        return m_uuid;        
+        return m_uuid;
     }
 
 private:
