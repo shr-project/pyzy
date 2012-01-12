@@ -56,14 +56,10 @@ DoublePinyinContext::~DoublePinyinContext ()
 bool
 DoublePinyinContext::insert (char ch)
 {
-    int id;
-    /* is full */
-    if (G_UNLIKELY (m_text.length () >= MAX_PINYIN_LEN))
-        return true;
+    const int id = ID (ch);
 
-    id = ID (ch);
     if (id == -1) {
-        /* it is not availidate ch */
+        /* it is not available ch */
         return false;
     }
 
@@ -71,6 +67,10 @@ DoublePinyinContext::insert (char ch)
         ID_TO_SHENG (id) == PINYIN_ID_VOID)) {
         return false;
     }
+
+    /* is full */
+    if (G_UNLIKELY (m_text.length () >= MAX_PINYIN_LEN))
+        return true;
 
     m_text.insert (m_cursor++, ch);
 
@@ -447,5 +447,3 @@ DoublePinyinContext::updatePinyin (bool all)
 }
 
 };  // namespace PyZy
-
-
