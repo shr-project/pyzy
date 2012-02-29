@@ -138,15 +138,15 @@ PinyinContext::updatePreeditText ()
             }
         }
         else {
-            m_preedit_text.rest_text = textAfterPinyin ();
+            edit_end_word = m_buffer.utf8Length ();
+            edit_end_byte = m_buffer.size ();
+            m_buffer << textAfterPinyin ();
         }
     }
 
-    if (edit_end_byte != 0) {
-        m_preedit_text.selected_text = m_buffer.substr (0, edit_begin_byte);
-        m_preedit_text.candidate_text = m_buffer.substr (edit_begin_byte, edit_end_byte - edit_begin_byte);
-        m_preedit_text.rest_text = m_buffer.substr (edit_end_byte);
-    }
+    m_preedit_text.selected_text = m_buffer.substr (0, edit_begin_byte);
+    m_preedit_text.candidate_text = m_buffer.substr (edit_begin_byte, edit_end_byte - edit_begin_byte);
+    m_preedit_text.rest_text = m_buffer.substr (edit_end_byte);
 
     PhoneticContext::updatePreeditText ();
 }

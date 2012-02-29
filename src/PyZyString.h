@@ -115,11 +115,6 @@ public:
         return appendPrintf ("%d", i);
     }
 
-    String & operator<< (size_t i)
-    {
-        return appendPrintf("%zd", i);
-    }
-
     String & operator<< (unsigned int i)
     {
         return appendPrintf ("%u", i);
