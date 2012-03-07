@@ -91,16 +91,20 @@ PhoneticContext::updateLookupTable (void)
     for (size_t i = 0; i < phrase_array.size (); ++i) {
         CandidateType candidate_type;
 
-        if (i < m_special_phrases.size ()) {
-            candidate_type = SPECIAL_PHRASE;
-        } else if (m_phrase_editor.candidateIsUserPhrase (i - m_special_phrases.size ())) {
+        if (m_phrase_editor.candidateIsUserPhrase (i)) {
             candidate_type = USER_PHRASE;
         } else {
             candidate_type = NORMAL_PHRASE;
         }
 
         Candidate candidate;
-        candidate.text = phrase_array[i].phrase;
+        if (G_LIKELY (m_config.modeSimp())) {
+          candidate.text = phrase_array[i].phrase;
+        } else {
+          String traditional_text;
+          SimpTradConverter::simpToTrad(phrase_array[i].phrase, traditional_text);
+          candidate.text = traditional_text;
+        }
         candidate.type = candidate_type;
         m_candidates.push_back (candidate);
     }
