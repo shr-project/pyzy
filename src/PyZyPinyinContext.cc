@@ -134,6 +134,9 @@ PinyinContext::updatePreeditText ()
                     }
                     m_buffer << '|' << textAfterPinyin (candidate_end);
                     m_preedit_text.rest_text = m_buffer;
+
+                    edit_end_word = m_buffer.utf8Length ();
+                    edit_end_byte = m_buffer.size ();
                 }
             }
         }
