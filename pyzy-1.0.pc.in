@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 datadir=@datadir@
-pkgdatadir=@datadir@/ibus
+pkgdatadir=@datadir@/pyzy
 
 Name: PyZy
 Description: Chinese PinYin & ZhuYin Library

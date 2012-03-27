@@ -1,11 +1,11 @@
 Name:       @PACKAGE_NAME@
 Version:    @PACKAGE_VERSION@
 Release:    1%{?dist}
-Summary:    The Chinese Pinyin and Bopomofo engines for IBus input platform
-License:    GPLv2+
+Summary:    The Chinese PinYin and Bopomofo conversion library.
+License:    LGPL2.1
 Group:      System Environment/Libraries
-URL:        http://code.google.com/p/ibus
-Source0:    http://ibus.googlecode.com/files/%{name}-%{version}.tar.gz
+URL:        http://code.google.com/p/pyzy
+Source0:    http://pyzy.googlecode.com/files/%{name}-%{version}.tar.gz
 Source1:    pinyin-database-1.2.99.tar.bz2
 
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

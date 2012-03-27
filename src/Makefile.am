@@ -126,8 +126,8 @@ libpyzy_1_0_la_LIBADD = \
 	@GLIB2_LIBS@ \
 	@SQLITE_LIBS@ \
 	@OPENCC_LIBS@ \
-	-lgtest \
 	$(NULL)
+#	-lgtest
 
 if HAVE_LIBUUID
 libpyzy_1_0_la_CXXFLAGS += $(LIBUUID_CFLAGS)

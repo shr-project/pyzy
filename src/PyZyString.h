@@ -120,6 +120,11 @@ public:
         return appendPrintf ("%u", i);
     }
 
+    String & operator<< (unsigned long i)
+    {
+        return appendPrintf ("%lu", i);
+    }
+
     String & operator<< (const char ch)
     {
         append (1, ch);

@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-if IBUS_BUILD_DB_OPEN_PHRASE
+if PYZY_BUILD_DB_OPEN_PHRASE
 db_file = open-phrase.db
 main_db_DATA = \
 	db/$(db_file) \
@@ -31,7 +31,7 @@ DBTAR = pinyin-database-$(DBVER).tar.bz2
 
 $(DBTAR):
 	$(AM_V_GEN) \
-	wget http://ibus.googlecode.com/files/$(DBTAR) || \
+	wget http://pyzy.googlecode.com/files/$(DBTAR) || \
 	( $(RM) $@; exit 1)
 
 stamp-db: $(DBTAR)

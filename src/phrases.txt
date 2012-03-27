@@ -1,9 +1,6 @@
-; ibus 拼音输入法--自定义短语配置文件
+; The Chinese PinYin and Bopomofo conversion library.
 ; 
 ; 说明：
-;   **注意**
-;       修改后请重新启动输入法
-;       或者运行下面命令：pkill -x -u $USERNAME ibus-engine-pinyin
 ;   格式：
 ;       英文字符串=短语
 ;       英文字符串=#动态短语

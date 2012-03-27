@@ -30,7 +30,7 @@ data_files = \
 	rawdict_utf16_65105_freq.txt \
 	$(NULL)
 
-if IBUS_BUILD_DB_ANDROID
+if PYZY_BUILD_DB_ANDROID
 main_db_DATA = \
 	android.db \
 	$(NULL)

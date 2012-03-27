@@ -21,17 +21,22 @@
  */
 #include "PyZyPhoneticContext.h"
 
-#include "PyZyFullPinyinContext.h"
-#include "PyZyDoublePinyinContext.h"
+#include <glib.h>
+#include <string>
+
 #include "PyZyBopomofoContext.h"
 #include "PyZyDatabase.h"
+#include "PyZyDoublePinyinContext.h"
+#include "PyZyFullPinyinContext.h"
 
 namespace PyZy {
 
 void
 InputContext::init ()
 {
-    init ("libpyzy");
+    const std::string cache_dir = g_get_user_cache_dir ();
+    const std::string data_dir = cache_dir + G_DIR_SEPARATOR_S + "pyzy";
+    init (data_dir);
 }
 
 void

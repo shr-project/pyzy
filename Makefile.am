@@ -118,7 +118,7 @@ dpkg: dist debian/changelog
 upload: dist
 	./tools/googlecode_upload.py \
 		-s "pyzy source code" \
-		-p ibus \
+		-p pyzy \
 		-l "Type-Source,OpSys-Linux,Chinese,Unstable" \
 		$(distdir).tar.gz
 

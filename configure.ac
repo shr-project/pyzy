@@ -36,7 +36,7 @@ m4_define([pyzy_api_version], [1.0])
 
 AC_PREFEQ([2.62])
 AC_INIT([pyzy], [pyzy_version],
-        [http://code.google.com/p/ibus/issues/entry],
+        [http://code.google.com/p/pyzy/issues/entry],
         [pyzy])
 
 AC_CONFIG_HEADERS([config.h])
@@ -95,7 +95,7 @@ AM_PROG_LIBTOOL
 # check glib2
 AM_PATH_GLIB_2_0
 PKG_CHECK_MODULES(GLIB2, [
-    glib-2.0 >= 2.26.0
+    glib-2.0 >= 2.24.0
 ])
 
 # check sqlite
@@ -134,7 +134,7 @@ AM_CONDITIONAL(HAVE_LIBUUID, test x"$HAVE_LIBUUID" = x"yes")
 AC_PATH_PROG(ENV, env)
 AC_SUBST(ENV)
 
-# --disble-boost
+# --enable-boost
 AC_ARG_ENABLE(boost,
     AC_HELP_STRING([--enable-boost],
         [Do not use boost and use stdc++0x to replace boost.]),
@@ -163,14 +163,14 @@ if test x"$enable_opencc" = x"yes"; then
     ])
 fi
 
-# --enable-db-android
+# --disable-db-android
 AC_ARG_ENABLE(db-android,
     AS_HELP_STRING([--disable-db-android],
         [do not build database from pinyin in android]),
     [enable_db_android=$enableval],
     [enable_db_android=yes]
 )
-AM_CONDITIONAL(IBUS_BUILD_DB_ANDROID, [test x"$enable_db_android" = x"yes" ])
+AM_CONDITIONAL(PYZY_BUILD_DB_ANDROID, [test x"$enable_db_android" = x"yes" ])
 
 # --enable-db-open-phrase
 AC_ARG_ENABLE(db-open-phrase,
@@ -179,7 +179,7 @@ AC_ARG_ENABLE(db-open-phrase,
     [enable_db_open_phrase=$enableval],
     [enable_db_open_phrase=no]
 )
-AM_CONDITIONAL(IBUS_BUILD_DB_OPEN_PHRASE, [test x"$enable_db_open_phrase" = x"yes" ])
+AM_CONDITIONAL(PYZY_BUILD_DB_OPEN_PHRASE, [test x"$enable_db_open_phrase" = x"yes" ])
 
 # OUTPUT files
 AC_CONFIG_FILES([

@@ -39,7 +39,7 @@ namespace PyZy {
 #define DB_PREFETCH_LEN     (6)
 #define DB_BACKUP_TIMEOUT   (60)
 
-#define USER_DICTIONARY_FILE  "user-1.3.db"
+#define USER_DICTIONARY_FILE  "user-1.0.db"
 
 
 std::unique_ptr<Database> Database::m_instance;
@@ -718,15 +718,8 @@ Database::remove (const Phrase & phrase)
 void
 Database::init (const std::string & user_data_dir)
 {
-    String cache_dir = g_get_user_cache_dir ();
-    String absolute_data_dir =
-        cache_dir +
-        G_DIR_SEPARATOR_S +
-        user_data_dir;
-    absolute_data_dir.replace ("/", G_DIR_SEPARATOR_S);
-
     if (m_instance.get () == NULL) {
-        m_instance.reset (new Database (absolute_data_dir));
+        m_instance.reset (new Database (user_data_dir));
     }
 }
 

@@ -43,7 +43,7 @@ private:
 SpecialPhraseTable::SpecialPhraseTable (void)
 {
     char * path = g_build_filename (g_get_user_config_dir (),
-                        "ibus", "pinyin", "phrases.txt", NULL);
+                        "pyzy", "phrases.txt", NULL);
 
     load ("phrases.txt") ||
     load (path) ||

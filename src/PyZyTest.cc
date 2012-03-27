@@ -55,7 +55,7 @@ protected:
         db_file += G_DIR_SEPARATOR_S;
         db_file += "libpyzy-test";
         db_file += G_DIR_SEPARATOR_S;
-        db_file += "user-1.3.db";
+        db_file += "user-1.0.db";
         g_unlink (db_file.c_str ());
     }
 };
