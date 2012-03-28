@@ -79,6 +79,7 @@ void
 PhoneticContext::updateLookupTable (void)
 {
     m_candidates.clear ();
+    m_focused_candidate = 0;
 
     for (size_t i = 0; i < m_special_phrases.size (); ++i) {
         Candidate candidate;
@@ -167,7 +168,7 @@ PhoneticContext::focusCandidate (size_t i)
     }
     m_focused_candidate = i;
 
-    update ();
+    updatePreeditText();
 
     return true;
 }
@@ -228,7 +229,7 @@ PhoneticContext::resetCandidate (size_t i)
     i -= m_special_phrases.size ();
 
     if (m_phrase_editor.resetCandidate (i)) {
-        update ();
+        updateLookupTable();
     }
 
     return true;
