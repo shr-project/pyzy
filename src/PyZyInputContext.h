@@ -40,13 +40,6 @@ struct Candidate {
     CandidateType type;
 };
 
-class Candidates {
-public:
-    virtual ~Candidates () { }
-    virtual const Candidate & get (size_t index) const = 0;
-    virtual const size_t size () const = 0;
-};
-
 class InputContext {
 public:
     virtual ~InputContext (void) { }
@@ -93,6 +86,9 @@ public:
     virtual bool focusCandidateNext (void) = 0;
     virtual bool resetCandidate (size_t index) = 0;
     virtual bool unselectCandidates () = 0;
+    virtual bool hasCandidate (size_t i) = 0;
+    virtual bool getCandidate (size_t i, Candidate & output) = 0;
+    virtual size_t getPreparedCandidatesSize () const = 0;
 
     virtual bool removeCharBefore (void) = 0;
     virtual bool removeCharAfter (void) = 0;
@@ -117,7 +113,6 @@ public:
     virtual const std::string & conversionText (void) const = 0;
     virtual const std::string & restText (void) const = 0;
     virtual const std::string & auxiliaryText (void) const = 0;
-    virtual const Candidates & candidates () const = 0;
     virtual unsigned int cursor () const = 0;
     virtual unsigned int focusedCandidate () const = 0;
 };

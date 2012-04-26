@@ -25,7 +25,6 @@
 #include <string>
 #include <vector>
 #include "PyZyInputContext.h"
-#include "PyZyCandidates.h"
 #include "PyZyConfig.h"
 #include "PyZyPinyinArray.h"
 #include "PyZyPhraseEditor.h"
@@ -59,6 +58,9 @@ public:
     bool focusCandidateNext ();
     bool resetCandidate (size_t i);
     bool unselectCandidates ();
+    bool hasCandidate (size_t i);
+    bool getCandidate (size_t i, Candidate & output);
+    size_t getPreparedCandidatesSize () const;
 
     /* inline functions */
     virtual void bopomofoSelectMode () { }
@@ -69,7 +71,6 @@ public:
     virtual const std::string & conversionText (void) const { return m_preedit_text.candidate_text; }
     virtual const std::string & restText (void) const { return m_preedit_text.rest_text; }
     virtual const std::string & auxiliaryText (void) const { return m_auxiliary_text; }
-    virtual const Candidates & candidates () const { return m_candidates; }
     virtual unsigned int cursor () const { return m_cursor; }
     virtual unsigned int focusedCandidate () const { return m_focused_candidate; }
 
@@ -80,7 +81,6 @@ protected:
     virtual void updateLookupTable (void);
     virtual void updateAuxiliaryText (void);
     virtual void updatePreeditText (void);
-
     virtual bool updateSpecialPhrases (void);
 
     /* inline functions */
@@ -121,7 +121,6 @@ protected:
     String                      m_text;
     Preedit                     m_preedit_text;
     std::string                 m_auxiliary_text;
-    ConcreteCandidates          m_candidates;
 
 private:
     PhoneticContext::Observer  *m_observer;

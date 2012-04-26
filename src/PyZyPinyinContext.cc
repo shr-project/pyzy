@@ -100,7 +100,7 @@ PinyinContext::updatePreeditText ()
         edit_begin_word = m_buffer.utf8Length ();
         edit_begin_byte = m_buffer.size ();
 
-        if (m_candidates.size () > 0) {
+        if (hasCandidate (0)) {
             size_t index = m_focused_candidate;
             if (index < m_special_phrases.size ()) {
                 m_buffer << m_special_phrases[index];
@@ -158,8 +158,7 @@ void
 PinyinContext::updateAuxiliaryText (void)
 {
     /* clear pinyin array */
-    if (G_UNLIKELY (m_text.empty () ||
-        m_candidates.size () == 0)) {
+    if (G_UNLIKELY (m_text.empty () || !hasCandidate (0))) {
         m_auxiliary_text = "";
         PhoneticContext::updateAuxiliaryText ();
         return;

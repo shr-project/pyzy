@@ -78,38 +78,7 @@ PhoneticContext::commitText (const std::string & commit_text)
 void
 PhoneticContext::updateLookupTable (void)
 {
-    m_candidates.clear ();
     m_focused_candidate = 0;
-
-    for (size_t i = 0; i < m_special_phrases.size (); ++i) {
-        Candidate candidate;
-        candidate.text = m_special_phrases[i];
-        candidate.type = SPECIAL_PHRASE;
-        m_candidates.push_back (candidate);
-    }
-
-    const PhraseArray & phrase_array = m_phrase_editor.candidates ();
-    for (size_t i = 0; i < phrase_array.size (); ++i) {
-        CandidateType candidate_type;
-
-        if (m_phrase_editor.candidateIsUserPhrase (i)) {
-            candidate_type = USER_PHRASE;
-        } else {
-            candidate_type = NORMAL_PHRASE;
-        }
-
-        Candidate candidate;
-        if (G_LIKELY (m_config.modeSimp())) {
-          candidate.text = phrase_array[i].phrase;
-        } else {
-          String traditional_text;
-          SimpTradConverter::simpToTrad(phrase_array[i].phrase, traditional_text);
-          candidate.text = traditional_text;
-        }
-        candidate.type = candidate_type;
-        m_candidates.push_back (candidate);
-    }
-
     m_observer->lookupTableChanged (this);
 }
 
@@ -137,7 +106,6 @@ PhoneticContext::resetContext (void)
     m_selected_special_phrase.clear ();
     m_text.clear ();
     m_preedit_text.clear ();
-    m_candidates.clear ();
     m_auxiliary_text.clear ();
 }
 
@@ -153,7 +121,7 @@ PhoneticContext::focusCandidatePrevious ()
 bool
 PhoneticContext::focusCandidateNext ()
 {
-    if (G_UNLIKELY (m_focused_candidate >= m_candidates.size ())) {
+    if (G_UNLIKELY (!hasCandidate (m_focused_candidate + 1))) {
         return false;
     }
     return focusCandidate (m_focused_candidate + 1);
@@ -162,7 +130,7 @@ PhoneticContext::focusCandidateNext ()
 bool
 PhoneticContext::focusCandidate (size_t i)
 {
-    if (G_UNLIKELY (i >= m_candidates.size ())) {
+    if (G_UNLIKELY (!hasCandidate (i))) {
         g_warning ("Too big index. Can't focus to selected candidate.");
         return false;
     }
@@ -184,8 +152,9 @@ PhoneticContext::update ()
 bool
 PhoneticContext::selectCandidate (size_t i)
 {
-    if (i >= m_candidates.size ()) {
+    if (!hasCandidate (i)) {
         g_warning ("selectCandidate(%zd): Too big index!\n", i);
+        return false;
     }
 
     if (i < m_special_phrases.size ()) {
@@ -241,8 +210,60 @@ PhoneticContext::unselectCandidates ()
     if (!m_phrase_editor.unselectCandidates ()) {
         return false;
     }
+    updateSpecialPhrases ();
     update ();
     return true;
+}
+
+bool
+PhoneticContext::hasCandidate (size_t i)
+{
+    if (G_UNLIKELY (!m_selected_special_phrase.empty())) {
+        return false;
+    }
+
+    while (true) {
+        const size_t candidates_size =
+            m_special_phrases.size () + m_phrase_editor.candidates ().size ();
+        if (i < candidates_size) {
+            break;
+        }
+        if (G_UNLIKELY (!m_phrase_editor.fillCandidates ())) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool
+PhoneticContext::getCandidate (size_t i, Candidate & candidate)
+{
+    if (G_UNLIKELY (!hasCandidate (i))) {
+        return false;
+    }
+
+    if (i < m_special_phrases.size ()) {
+        candidate.text = m_special_phrases[i];
+        candidate.type = SPECIAL_PHRASE;
+        return true;
+    }
+
+    i -= m_special_phrases.size ();
+    candidate.text = m_phrase_editor.candidate (i).phrase;
+    candidate.type = m_phrase_editor.candidateIsUserPhrase (i)
+        ? USER_PHRASE : NORMAL_PHRASE;
+    return true;
+}
+
+size_t
+PhoneticContext::getPreparedCandidatesSize () const
+{
+    if (G_UNLIKELY (!m_selected_special_phrase.empty())) {
+        return 0;
+    }
+
+    return m_special_phrases.size () + m_phrase_editor.candidates ().size ();
 }
 
 };  // namespace PyZy

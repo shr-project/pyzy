@@ -53,7 +53,6 @@ libpyzy_built_h_sources = \
 libpyzy_c_sources = \
 	PyZyInputContext.cc \
 	PyZyBopomofoContext.cc \
-        PyZyCandidates.cc \
 	PyZyConfig.cc \
 	PyZyDatabase.cc \
 	PyZyDoublePinyinContext.cc \
@@ -71,7 +70,6 @@ libpyzy_h_sources = \
 	PyZyInputContext.h \
 	PyZyBopomofo.h \
 	PyZyBopomofoContext.h \
-        PyZyCandidates.h \
 	PyZyConfig.h \
 	PyZyDatabase.h \
 	PyZyDoublePinyinContext.h \

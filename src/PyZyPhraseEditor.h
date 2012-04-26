@@ -27,8 +27,7 @@
 #include "PyZyPhraseArray.h"
 #include "PyZyPinyinArray.h"
 
-// TODO(hsumita): Refine this value after refactor PyZyCandidates. 
-#define FILL_GRAN (10000)
+#define FILL_GRAN (12)
 
 namespace PyZy {
 
