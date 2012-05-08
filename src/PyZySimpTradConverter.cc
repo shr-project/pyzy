@@ -33,7 +33,6 @@
 #  include <cstdlib>
 #endif
 
-#include "PyZyTypes.h"
 #include "PyZyString.h"
 
 namespace PyZy {

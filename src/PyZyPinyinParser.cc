@@ -22,6 +22,7 @@
 
 #include <cstring>
 #include <cstdlib>
+#include "PyZyConfig.h"
 #include "PyZyPinyinParser.h"
 
 namespace PyZy {

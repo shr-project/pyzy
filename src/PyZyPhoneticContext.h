@@ -32,6 +32,8 @@
 
 namespace PyZy {
 
+#define MAX_PINYIN_LEN 64
+
 struct Preedit {
     std::string selected_text;
     std::string candidate_text;

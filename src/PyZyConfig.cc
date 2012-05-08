@@ -22,7 +22,6 @@
 #include "PyZyConfig.h"
 
 #include "PyZyUtil.h"
-#include "PyZyTypes.h"
 #include "PyZyDoublePinyinTable.h"
 
 namespace PyZy {

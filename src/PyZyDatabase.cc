@@ -23,6 +23,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <sqlite3.h>
+#include "PyZyConfig.h"
 #include "PyZyUtil.h"
 #include "PyZyPinyinArray.h"
 
