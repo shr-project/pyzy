@@ -250,7 +250,14 @@ PhoneticContext::getCandidate (size_t i, Candidate & candidate)
     }
 
     i -= m_special_phrases.size ();
-    candidate.text = m_phrase_editor.candidate (i).phrase;
+    if (m_config.modeSimp ()) {
+        candidate.text = m_phrase_editor.candidate (i).phrase;
+    } else {
+        String output;
+        SimpTradConverter::simpToTrad (m_phrase_editor.candidate (i).phrase,
+                                       output);
+        candidate.text = output;
+    }
     candidate.type = m_phrase_editor.candidateIsUserPhrase (i)
         ? USER_PHRASE : NORMAL_PHRASE;
     return true;
