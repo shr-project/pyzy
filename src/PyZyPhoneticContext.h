@@ -80,7 +80,7 @@ protected:
     virtual void resetContext (void);
     virtual void update (void);
     virtual void commitText (const std::string & commit_text);
-    virtual void updateLookupTable (void);
+    virtual void updateCandidates (void);
     virtual void updateAuxiliaryText (void);
     virtual void updatePreeditText (void);
     virtual bool updateSpecialPhrases (void);

@@ -76,10 +76,10 @@ PhoneticContext::commitText (const std::string & commit_text)
 }
 
 void
-PhoneticContext::updateLookupTable (void)
+PhoneticContext::updateCandidates (void)
 {
     m_focused_candidate = 0;
-    m_observer->lookupTableChanged (this);
+    m_observer->candidatesChanged (this);
 }
 
 void
@@ -144,7 +144,7 @@ PhoneticContext::focusCandidate (size_t i)
 void
 PhoneticContext::update ()
 {
-    updateLookupTable ();
+    updateCandidates ();
     updatePreeditText ();
     updateAuxiliaryText ();
 }
@@ -198,7 +198,7 @@ PhoneticContext::resetCandidate (size_t i)
     i -= m_special_phrases.size ();
 
     if (m_phrase_editor.resetCandidate (i)) {
-        updateLookupTable();
+        updateCandidates();
     }
 
     return true;

@@ -51,7 +51,7 @@ public:
                                  const std::string &commit_text) = 0;
         virtual void preeditTextChanged (const InputContext * context) = 0;
         virtual void auxiliaryTextChanged (const InputContext * context) = 0;
-        virtual void lookupTableChanged (const InputContext * context) = 0;
+        virtual void candidatesChanged (const InputContext * context) = 0;
     };
 
     enum InputType {
