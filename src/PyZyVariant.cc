@@ -19,26 +19,50 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
-#ifndef __PYZY_CONFIG_H_
-#define __PYZY_CONFIG_H_
-
-#include <PyZyConst.h>
+#include "PyZyVariant.h"
 
 namespace PyZy {
 
-struct Config {
-    Config (void)
-        : option (PINYIN_INCOMPLETE_PINYIN |
-                  PINYIN_CORRECT_ALL |
-                  PINYIN_FUZZY_ALL),
-          specialPhrases (true),
-          modeSimp (true) { }
+// static
+Variant Variant::fromBool (bool value)
+{
+    Variant variant;
+    variant.m_type = TYPE_BOOL;
+    variant.m_value.bool_value = value;
+    return variant;
+}
 
-    unsigned int option;
-    bool specialPhrases;
-    bool modeSimp;
-};
+// static
+Variant Variant::fromUnsignedInt (unsigned int value)
+{
+    Variant variant;
+    variant.m_type = TYPE_UNSIGNED_INT;
+    variant.m_value.unsigned_int_value = value;
+    return variant;
+}
 
-};  // namespace PyZy
+// static
+Variant Variant::nullVariant (void)
+{
+    Variant variant;
+    variant.m_type = TYPE_NULL;
+    variant.m_value.unsigned_int_value = 0u;
+    return variant;
+}
 
-#endif  // __PYZY_CONFIG_H_
+Variant::Type Variant::getType (void) const
+{
+    return m_type;
+}
+
+bool Variant::getBool (void) const
+{
+    return m_value.bool_value;
+}
+
+unsigned int Variant::getUnsignedInt (void) const
+{
+    return m_value.unsigned_int_value;
+}
+
+}  // namespace PyZy

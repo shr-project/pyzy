@@ -37,15 +37,16 @@ namespace PyZy {
     ((c >= 'a' && c <= 'z') ? c - 'a' : (c == ';' ? 26 : -1))
 
 #define ID_TO_SHENG(id) \
-    (double_pinyin_map[m_config.doublePinyinSchema ()].sheng[id])
+    (double_pinyin_map[m_double_pinyin_schema].sheng[id])
 #define ID_TO_YUNS(id) \
-    (double_pinyin_map[m_config.doublePinyinSchema ()].yun[id])
+    (double_pinyin_map[m_double_pinyin_schema].yun[id])
 
 #define IS_ALPHA(c) \
     ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 
-DoublePinyinContext::DoublePinyinContext (Config & config, PhoneticContext::Observer *observer)
-    : PinyinContext (config, observer)
+DoublePinyinContext::DoublePinyinContext (PhoneticContext::Observer *observer)
+    : PinyinContext (observer),
+      m_double_pinyin_schema (DOUBLE_PINYIN_KEYBOARD_MSPY)
 {
 }
 
@@ -325,7 +326,7 @@ DoublePinyinContext::moveCursorToEnd (void)
 inline const Pinyin *
 DoublePinyinContext::isPinyin (int i)
 {
-    if ((m_config.option () & PINYIN_INCOMPLETE_PINYIN) == 0) {
+    if ((m_config.option & PINYIN_INCOMPLETE_PINYIN) == 0) {
         return NULL;
     }
 
@@ -352,20 +353,21 @@ DoublePinyinContext::isPinyin (int i, int j)
         return NULL;
 
     if (yun[1] == PINYIN_ID_VOID) {
-        return PinyinParser::isPinyin (sheng, yun[0],
-                        m_config.option () & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
+        return PinyinParser::isPinyin (
+            sheng, yun[0],
+            m_config.option & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
     }
 
-    pinyin = PinyinParser::isPinyin (sheng, yun[0],
-                    m_config.option () & (PINYIN_FUZZY_ALL));
+    pinyin = PinyinParser::isPinyin (
+        sheng, yun[0], m_config.option & (PINYIN_FUZZY_ALL));
     if (pinyin == NULL)
-        pinyin = PinyinParser::isPinyin (sheng, yun[1],
-                        m_config.option () & (PINYIN_FUZZY_ALL));
+        pinyin = PinyinParser::isPinyin (
+            sheng, yun[1], m_config.option & (PINYIN_FUZZY_ALL));
     if (pinyin != NULL)
         return pinyin;
 
     /* if sheng == j q x y and yun == v, try to correct v to u */
-    if ((m_config.option () & PINYIN_CORRECT_V_TO_U) == 0)
+    if ((m_config.option & PINYIN_CORRECT_V_TO_U) == 0)
         return NULL;
 
     if (yun[0] != PINYIN_ID_V && yun[1] != PINYIN_ID_V)
@@ -376,8 +378,9 @@ DoublePinyinContext::isPinyin (int i, int j)
     case PINYIN_ID_Q:
     case PINYIN_ID_X:
     case PINYIN_ID_Y:
-        return PinyinParser::isPinyin (sheng, PINYIN_ID_V,
-                            m_config.option () & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
+        return PinyinParser::isPinyin (
+            sheng, PINYIN_ID_V,
+            m_config.option & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
     default:
         return NULL;
     }
@@ -411,7 +414,8 @@ DoublePinyinContext::updatePinyin (bool all)
         size_t len = m_pinyin_len;
         if (m_pinyin.empty () == false &&
             m_pinyin.back ()->flags & PINYIN_INCOMPLETE_PINYIN) {
-            const Pinyin *pinyin = isPinyin (ID (m_text[m_pinyin_len -1]),ID (m_text[m_pinyin_len]));
+            const Pinyin *pinyin = isPinyin (
+                ID (m_text[m_pinyin_len -1]),ID (m_text[m_pinyin_len]));
             if (pinyin) {
                 m_pinyin.pop_back ();
                 m_pinyin.append (pinyin, m_pinyin_len - 1, 2);
@@ -424,7 +428,8 @@ DoublePinyinContext::updatePinyin (bool all)
                 pinyin = isPinyin (ID (m_text[m_pinyin_len]));
             }
             else {
-                pinyin = isPinyin (ID (m_text[m_pinyin_len]), ID (m_text[m_pinyin_len + 1]));
+                pinyin = isPinyin (
+                    ID (m_text[m_pinyin_len]), ID (m_text[m_pinyin_len + 1]));
                 if (pinyin == NULL)
                     pinyin = isPinyin (ID (m_text[m_pinyin_len]));
             }
@@ -444,6 +449,35 @@ DoublePinyinContext::updatePinyin (bool all)
         return true;
     }
     return retval;
+}
+
+Variant
+DoublePinyinContext::getProperty (PropertyName name) const
+{
+    if (name == PROPERTY_DOUBLE_PINYIN_SCHEMA) {
+        return Variant::fromUnsignedInt (m_double_pinyin_schema);
+    }
+
+    return PhoneticContext::getProperty (name);
+}
+
+bool
+DoublePinyinContext::setProperty (PropertyName name, const Variant &variant)
+{
+    if (name == PROPERTY_DOUBLE_PINYIN_SCHEMA) {
+        if (variant.getType () != Variant::TYPE_UNSIGNED_INT) {
+            return false;
+        }
+        const unsigned int schema = variant.getUnsignedInt ();
+        if (schema >= DOUBLE_PINYIN_KEYBOARD_LAST) {
+            return false;
+        }
+
+        m_double_pinyin_schema = schema;
+        return true;
+    }
+
+    return PhoneticContext::setProperty (name, variant);
 }
 
 };  // namespace PyZy

@@ -27,8 +27,8 @@
 
 namespace PyZy {
 
-FullPinyinContext::FullPinyinContext (Config & config, PhoneticContext::Observer *observer)
-  : PinyinContext (config, observer)
+FullPinyinContext::FullPinyinContext (PhoneticContext::Observer *observer)
+  : PinyinContext (observer)
 {
 }
 
@@ -50,7 +50,7 @@ FullPinyinContext::insert (char ch)
 
     m_text.insert (m_cursor++, ch);
 
-    if (G_UNLIKELY (!(m_config.option () & PINYIN_INCOMPLETE_PINYIN))) {
+    if (G_UNLIKELY (!(m_config.option & PINYIN_INCOMPLETE_PINYIN))) {
         updateSpecialPhrases ();
         updatePinyin ();
     }
@@ -227,11 +227,12 @@ FullPinyinContext::updatePinyin (void)
         m_pinyin_len = 0;
     }
     else {
-        m_pinyin_len = PinyinParser::parse (m_text,              // text
-                                            m_cursor,            // text length
-                                            m_config.option (),   // option
-                                            m_pinyin,            // result
-                                            MAX_PHRASE_LEN);     // max result length
+        m_pinyin_len = PinyinParser::parse (
+            m_text,              // text
+            m_cursor,            // text length
+            m_config.option,     // option
+            m_pinyin,            // result
+            MAX_PHRASE_LEN);     // max result length
     }
 
     updatePhraseEditor ();

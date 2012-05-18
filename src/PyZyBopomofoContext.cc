@@ -40,8 +40,9 @@ const static char * bopomofo_select_keys[] = {
     "qweasdzxcr"
 };
 
-BopomofoContext::BopomofoContext (Config & config, PhoneticContext::Observer *observer)
-    : PhoneticContext (config, observer)
+BopomofoContext::BopomofoContext (PhoneticContext::Observer *observer)
+    : PhoneticContext (observer),
+      m_bopomofo_schema (BOPOMOFO_KEYBOARD_STANDARD)
 {
 }
 
@@ -62,7 +63,7 @@ BopomofoContext::insert (char ch)
 
     m_text.insert (m_cursor++, ch);
 
-    if (G_UNLIKELY (!(m_config.option () & PINYIN_INCOMPLETE_PINYIN))) {
+    if (G_UNLIKELY (!(m_config.option & PINYIN_INCOMPLETE_PINYIN))) {
         updateSpecialPhrases ();
         updatePinyin ();
     }
@@ -247,11 +248,12 @@ BopomofoContext::updatePinyin (void)
             bopomofo += bopomofo_char[keyvalToBopomofo (*i)];
         }
 
-        m_pinyin_len = PinyinParser::parseBopomofo (bopomofo,            // bopomofo
-                                                    m_cursor,            // text length
-                                                    m_config.option (),   // option
-                                                    m_pinyin,            // result
-                                                    MAX_PHRASE_LEN);     // max result length
+        m_pinyin_len = PinyinParser::parseBopomofo (
+            bopomofo,            // bopomofo
+            m_cursor,            // text length
+            m_config.option,     // option
+            m_pinyin,            // result
+            MAX_PHRASE_LEN);     // max result length
     }
 
     updatePhraseEditor ();
@@ -396,7 +398,7 @@ BopomofoContext::updatePreeditText (void)
                 const Phrase & candidate = m_phrase_editor.candidate (index - m_special_phrases.size ());
                 if (m_text.size () == m_cursor) {
                     /* cursor at end */
-                    if (m_config.modeSimp ())
+                    if (m_config.modeSimp)
                         m_buffer << candidate;
                     else
                         SimpTradConverter::simpToTrad (candidate, m_buffer);
@@ -434,6 +436,34 @@ BopomofoContext::updatePreeditText (void)
     PhoneticContext::updatePreeditText ();
 }
 
+Variant
+BopomofoContext::getProperty (PropertyName name) const
+{
+    if (name == PROPERTY_BOPOMOFO_SCHEMA) {
+        return Variant::fromUnsignedInt(m_bopomofo_schema);
+    }
+    return PhoneticContext::getProperty (name);
+}
+
+bool
+BopomofoContext::setProperty (PropertyName name, const Variant &variant)
+{
+    if (name == PROPERTY_BOPOMOFO_SCHEMA) {
+        if (variant.getType () != Variant::TYPE_UNSIGNED_INT) {
+            return false;
+        }
+        const unsigned int schema = variant.getUnsignedInt ();
+        if (schema >= BOPOMOFO_KEYBOARD_LAST) {
+            return false;
+        }
+
+        m_bopomofo_schema = schema;
+        return true;
+    }
+
+    return PhoneticContext::setProperty (name, variant);
+}
+
 static int
 keyboard_cmp (const void * p1, const void * p2)
 {
@@ -445,7 +475,7 @@ keyboard_cmp (const void * p1, const void * p2)
 int
 BopomofoContext::keyvalToBopomofo(int ch)
 {
-    const unsigned int keyboard = m_config.bopomofoKeyboardMapping ();
+    const unsigned int keyboard = m_bopomofo_schema;
     const unsigned char *brs;
     brs = (const unsigned char *) std::bsearch (GINT_TO_POINTER (ch),
                                        bopomofo_keyboard[keyboard],

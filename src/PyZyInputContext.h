@@ -27,7 +27,7 @@
 
 namespace PyZy {
 
-class Config;
+class Variant;
 
 enum CandidateType {
     NORMAL_PHRASE,
@@ -63,7 +63,15 @@ public:
     enum CommitType {
         TYPE_RAW,
         TYPE_PHONETIC,
-        TYPE_CONVERTED
+        TYPE_CONVERTED,
+    };
+
+    enum PropertyName {
+        PROPERTY_CONVERSION_OPTION,
+        PROPERTY_DOUBLE_PINYIN_SCHEMA,
+        PROPERTY_BOPOMOFO_SCHEMA,
+        PROPERTY_SPECIAL_PHRASE,
+        PROPERTY_MODE_SIMP,
     };
 
     /* member functions */
@@ -97,15 +105,12 @@ public:
     // TODO(hsumita): Parse pinyin after cursor.
     virtual bool removeWordAfter (void) = 0;
 
-    virtual void bopomofoSelectMode () = 0;
-
     /* static functions */
     static void init ();
     static void init (const std::string & user_data_dir);
     static void finalize ();
     static InputContext * create (InputContext::InputType type,
-                                 Config & config,
-                                 InputContext::Observer * observer);
+                                  InputContext::Observer * observer);
 
     /* accessors */
     virtual const std::string & inputText () const = 0;
@@ -115,6 +120,9 @@ public:
     virtual const std::string & auxiliaryText (void) const = 0;
     virtual unsigned int cursor () const = 0;
     virtual unsigned int focusedCandidate () const = 0;
+
+    virtual Variant getProperty (PropertyName name) const = 0;
+    virtual bool setProperty (PropertyName name, const Variant &variant)= 0;
 };
 
 }; // namespace PyZy

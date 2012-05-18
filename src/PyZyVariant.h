@@ -19,26 +19,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
-#ifndef __PYZY_CONFIG_H_
-#define __PYZY_CONFIG_H_
-
-#include <PyZyConst.h>
+#ifndef __PYZY_VARIANT_H_
+#define __PYZY_VARIANT_H_
 
 namespace PyZy {
 
-struct Config {
-    Config (void)
-        : option (PINYIN_INCOMPLETE_PINYIN |
-                  PINYIN_CORRECT_ALL |
-                  PINYIN_FUZZY_ALL),
-          specialPhrases (true),
-          modeSimp (true) { }
+class Variant {
+public:
+    enum Type {
+        TYPE_NULL,
+        TYPE_BOOL,
+        TYPE_UNSIGNED_INT,
+    };
 
-    unsigned int option;
-    bool specialPhrases;
-    bool modeSimp;
+    static Variant fromBool (bool value);
+    static Variant fromUnsignedInt (unsigned int value);
+    static Variant nullVariant (void);
+
+    Type getType (void) const;
+    bool getBool (void) const;
+    unsigned int getUnsignedInt (void) const;
+
+private:
+    Variant();
+
+    Type m_type;
+    union {
+        bool bool_value;
+        unsigned int  unsigned_int_value;
+    } m_value;
 };
 
-};  // namespace PyZy
+}  // namespace PyZy
 
-#endif  // __PYZY_CONFIG_H_
+#endif

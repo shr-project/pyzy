@@ -27,12 +27,10 @@
 
 namespace PyZy {
 
-class Config;
-
 class BopomofoContext : public PhoneticContext {
 
 public:
-    BopomofoContext (Config & config, PhoneticContext::Observer *observer);
+    explicit BopomofoContext (PhoneticContext::Observer *observer);
     virtual ~BopomofoContext (void);
 
     /* API of InputContext */
@@ -51,13 +49,20 @@ public:
     virtual bool moveCursorToBegin (void);
     virtual bool moveCursorToEnd (void);
 
+    virtual Variant getProperty (PropertyName name) const;
+    virtual bool setProperty (PropertyName name, const Variant &variant);
+
 protected:
     virtual void updateAuxiliaryText ();
     virtual void updatePinyin ();
     virtual void updatePreeditText ();
 
-    bool processBopomofo (unsigned int keyval, unsigned int keycode, unsigned int modifiers);
+    bool processBopomofo (
+        unsigned int keyval, unsigned int keycode, unsigned int modifiers);
     int keyvalToBopomofo(int ch);
+
+private:
+    unsigned int m_bopomofo_schema;
 };
 
 };

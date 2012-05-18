@@ -37,8 +37,9 @@ libpyzy=libpyzy-1.0.la
 
 libpyzyincludedir = $(includedir)/pyzy-@PYZY_API_VERSION@
 libpyzyinclude_HEADERS = \
+	PyZyConst.h \
 	PyZyInputContext.h \
-	PyZyConfig.h \
+	PyZyVariant.h \
 	$(NULL)
 
 lib_LTLIBRARIES = $(libpyzy)
@@ -51,30 +52,32 @@ libpyzy_built_h_sources = \
 	PyZySimpTradConverterTable.h \
 	$(NULL)
 libpyzy_c_sources = \
-	PyZyInputContext.cc \
 	PyZyBopomofoContext.cc \
-	PyZyConfig.cc \
 	PyZyDatabase.cc \
 	PyZyDoublePinyinContext.cc \
+	PyZyDynamicSpecialPhrase.cc \
 	PyZyFullPinyinContext.cc \
+	PyZyInputContext.cc \
 	PyZyPhoneticContext.cc \
 	PyZyPhraseEditor.cc \
 	PyZyPinyinContext.cc \
 	PyZyPinyinParser.cc \
 	PyZySimpTradConverter.cc \
-	PyZyDynamicSpecialPhrase.cc \
 	PyZySpecialPhraseTable.cc \
+	PyZyVariant.cc \
 	$(NULL)
 #	PyZyTest.cc 
 libpyzy_h_sources = \
-	PyZyInputContext.h \
 	PyZyBopomofo.h \
 	PyZyBopomofoContext.h \
 	PyZyConfig.h \
+	PyZyConst.h \
 	PyZyDatabase.h \
 	PyZyDoublePinyinContext.h \
 	PyZyDoublePinyinTable.h \
+	PyZyDynamicSpecialPhrase.h \
 	PyZyFullPinyinContext.h \
+	PyZyInputContext.h \
 	PyZyPhoneticContext.h \
 	PyZyPhrase.h \
 	PyZyPhraseArray.h \
@@ -84,11 +87,11 @@ libpyzy_h_sources = \
 	PyZyPinyinParser.h \
 	PyZySimpTradConverter.h \
 	PyZySpecialPhrase.h \
-	PyZyDynamicSpecialPhrase.h \
 	PyZySpecialPhraseTable.h \
 	PyZyString.h \
 	PyZyTypes.h \
 	PyZyUtil.h \
+	PyZyVariant.h \
 	$(NULL)
 
 libpyzy_1_0_la_SOURCES = \

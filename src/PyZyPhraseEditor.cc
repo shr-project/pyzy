@@ -26,14 +26,14 @@
 
 namespace PyZy {
 
-PhraseEditor::PhraseEditor (Config & config)
-    : m_candidates (32),
+PhraseEditor::PhraseEditor (const Config & config)
+    : m_config(config),
+      m_candidates (32),
       m_selected_phrases (8),
       m_selected_string (32),
       m_candidate_0_phrases (8),
       m_pinyin (16),
-      m_cursor (0),
-      m_config (config)
+      m_cursor (0)
 {
 }
 
@@ -83,7 +83,7 @@ PhraseEditor::selectCandidate (size_t i)
         m_selected_phrases.insert (m_selected_phrases.end (),
                                    m_candidate_0_phrases.begin (),
                                    m_candidate_0_phrases.end ());
-        if (G_LIKELY (m_config.modeSimp ()))
+        if (G_LIKELY (m_config.modeSimp))
             m_selected_string << m_candidates[0].phrase;
         else
             SimpTradConverter::simpToTrad (m_candidates[0].phrase, m_selected_string);
@@ -91,7 +91,7 @@ PhraseEditor::selectCandidate (size_t i)
     }
     else {
         m_selected_phrases.push_back (m_candidates[i]);
-        if (G_LIKELY (m_config.modeSimp ()))
+        if (G_LIKELY (m_config.modeSimp))
             m_selected_string << m_candidates[i].phrase;
         else
             SimpTradConverter::simpToTrad (m_candidates[i].phrase, m_selected_string);
@@ -123,7 +123,7 @@ PhraseEditor::updateCandidates (void)
     m_query.reset (new Query (m_pinyin,
                               m_cursor,
                               m_pinyin.size () - m_cursor,
-                              m_config.option ()));
+                              m_config.option));
     fillCandidates ();
 }
 
@@ -146,7 +146,7 @@ PhraseEditor::updateTheFirstCandidate (void)
         Query query (m_pinyin,
                      begin,
                      end - begin,
-                     m_config.option ());
+                     m_config.option);
         ret = query.fill (m_candidate_0_phrases, 1);
         g_assert (ret == 1);
         begin += m_candidate_0_phrases.back ().len;

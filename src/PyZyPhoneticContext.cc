@@ -26,9 +26,8 @@
 
 namespace PyZy {
 
-PhoneticContext::PhoneticContext (Config & config, PhoneticContext::Observer *observer)
-    : m_config (config),
-      m_phrase_editor (config),
+PhoneticContext::PhoneticContext (PhoneticContext::Observer *observer)
+    : m_phrase_editor (m_config),
       m_observer (observer)
 {
     resetContext ();
@@ -44,7 +43,7 @@ PhoneticContext::updateSpecialPhrases (void)
     size_t size = m_special_phrases.size ();
     m_special_phrases.clear ();
 
-    if (!m_config.specialPhrases ())
+    if (!m_config.specialPhrases)
         return false;
 
     if (!m_selected_special_phrase.empty ())
@@ -250,7 +249,7 @@ PhoneticContext::getCandidate (size_t i, Candidate & candidate)
     }
 
     i -= m_special_phrases.size ();
-    if (m_config.modeSimp ()) {
+    if (m_config.modeSimp) {
         candidate.text = m_phrase_editor.candidate (i).phrase;
     } else {
         String output;
@@ -271,6 +270,52 @@ PhoneticContext::getPreparedCandidatesSize () const
     }
 
     return m_special_phrases.size () + m_phrase_editor.candidates ().size ();
+}
+
+Variant
+PhoneticContext::getProperty (PropertyName name) const
+{
+    switch (name) {
+    case PROPERTY_CONVERSION_OPTION:
+        return Variant::fromUnsignedInt (m_config.option);
+    case PROPERTY_SPECIAL_PHRASE:
+        return Variant::fromBool (m_config.specialPhrases);
+    case PROPERTY_MODE_SIMP:
+        return Variant::fromBool (m_config.modeSimp);
+    default:
+        return Variant::nullVariant ();
+    }
+}
+
+bool
+PhoneticContext::setProperty (PropertyName name, const Variant &variant)
+{
+    if (variant.getType () == Variant::TYPE_UNSIGNED_INT) {
+        const unsigned int value = variant.getUnsignedInt ();
+
+        switch (name) {
+        case PROPERTY_CONVERSION_OPTION:
+            m_config.option = value;
+            return true;
+        default:
+            return false;
+        }
+    } else if (variant.getType () == Variant::TYPE_BOOL) {
+        const bool value = variant.getBool ();
+
+        switch (name) {
+        case PROPERTY_SPECIAL_PHRASE:
+            m_config.specialPhrases = value;
+            return true;
+        case PROPERTY_MODE_SIMP:
+            m_config.modeSimp = value;
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    return false;
 }
 
 };  // namespace PyZy

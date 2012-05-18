@@ -51,18 +51,16 @@ InputContext::finalize ()
     Database::finalize ();
 }
 
-
 InputContext *
 InputContext::create (InputContext::InputType type,
-                      Config & config,
                       InputContext::Observer * observer) {
     switch (type) {
     case FULL_PINYIN:
-        return new FullPinyinContext (config, observer);
+        return new FullPinyinContext (observer);
     case DOUBLE_PINYIN:
-        return new DoublePinyinContext (config, observer);
+        return new DoublePinyinContext (observer);
     case BOPOMOFO:
-        return new BopomofoContext (config, observer);
+        return new BopomofoContext (observer);
     default:
         g_warning ("unknown context type.\n");
         return NULL;

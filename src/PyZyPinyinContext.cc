@@ -24,8 +24,8 @@
 
 namespace PyZy {
 
-PinyinContext::PinyinContext (Config & config, PhoneticContext::Observer * observer)
-    : PhoneticContext (config, observer)
+PinyinContext::PinyinContext (PhoneticContext::Observer * observer)
+    : PhoneticContext (observer)
 {
 }
 
@@ -114,7 +114,7 @@ PinyinContext::updatePreeditText ()
                 const Phrase & candidate = m_phrase_editor.candidate (index - m_special_phrases.size ());
                 if (m_text.size () == m_cursor) {
                     /* cursor at end */
-                    if (m_config.modeSimp ())
+                    if (m_config.modeSimp)
                         m_buffer << candidate;
                     else
                         SimpTradConverter::simpToTrad (candidate, m_buffer);

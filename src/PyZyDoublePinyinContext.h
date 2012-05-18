@@ -26,12 +26,10 @@
 
 namespace PyZy {
 
-class Config;
-
 class DoublePinyinContext : public PinyinContext {
 
 public:
-    DoublePinyinContext (Config & config, PhoneticContext::Observer *observer);
+    explicit DoublePinyinContext (PhoneticContext::Observer *observer);
     virtual ~DoublePinyinContext ();
 
     virtual bool insert (char ch);
@@ -48,6 +46,9 @@ public:
     virtual bool moveCursorToBegin (void);
     virtual bool moveCursorToEnd (void);
 
+    virtual Variant getProperty (PropertyName name) const;
+    virtual bool setProperty (PropertyName name, const Variant &variant);
+
 protected:
     virtual bool updatePinyin (bool all);
 
@@ -55,6 +56,7 @@ private:
     const Pinyin *isPinyin (int i, int j);
     const Pinyin *isPinyin (int i);
 
+    unsigned int m_double_pinyin_schema;
 };
 
 };  // namespace PyZy

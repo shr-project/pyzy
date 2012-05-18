@@ -26,9 +26,11 @@
 #include <vector>
 #include "PyZyInputContext.h"
 #include "PyZyConfig.h"
+#include "PyZyConst.h"
 #include "PyZyPinyinArray.h"
 #include "PyZyPhraseEditor.h"
 #include "PyZySpecialPhraseTable.h"
+#include "PyZyVariant.h"
 
 namespace PyZy {
 
@@ -48,7 +50,7 @@ struct Preedit {
 
 class PhoneticContext : public InputContext {
 public:
-    PhoneticContext (Config & config, PhoneticContext::Observer *observer);
+    explicit PhoneticContext (PhoneticContext::Observer *observer);
     virtual ~PhoneticContext (void);
 
     /* API of InputContext */
@@ -64,17 +66,44 @@ public:
     bool getCandidate (size_t i, Candidate & output);
     size_t getPreparedCandidatesSize () const;
 
-    /* inline functions */
-    virtual void bopomofoSelectMode () { }
+    virtual Variant getProperty (PropertyName name) const;
+    virtual bool setProperty (PropertyName name, const Variant &variant);
 
     /* Accessors of InputContext. */
-    virtual const std::string & inputText () const { return m_text; }
-    virtual const std::string & selectedText (void) const { return m_preedit_text.selected_text; }
-    virtual const std::string & conversionText (void) const { return m_preedit_text.candidate_text; }
-    virtual const std::string & restText (void) const { return m_preedit_text.rest_text; }
-    virtual const std::string & auxiliaryText (void) const { return m_auxiliary_text; }
-    virtual unsigned int cursor () const { return m_cursor; }
-    virtual unsigned int focusedCandidate () const { return m_focused_candidate; }
+    virtual const std::string & inputText () const
+    {
+        return m_text;
+    }
+
+    virtual const std::string & selectedText (void) const
+    {
+        return m_preedit_text.selected_text;
+    }
+
+    virtual const std::string & conversionText (void) const
+    {
+        return m_preedit_text.candidate_text;
+    }
+
+    virtual const std::string & restText (void) const
+    {
+        return m_preedit_text.rest_text;
+    }
+
+    virtual const std::string & auxiliaryText (void) const
+    {
+        return m_auxiliary_text;
+    }
+
+    virtual unsigned int cursor () const
+    {
+        return m_cursor;
+    }
+
+    virtual unsigned int focusedCandidate () const
+    {
+        return m_focused_candidate;
+    }
 
 protected:
     virtual void resetContext (void);
@@ -111,7 +140,7 @@ protected:
     }
 
     /* variables */
-    Config                     &m_config;
+    Config                      m_config;
     size_t                      m_cursor;
     size_t                      m_focused_candidate;
     PinyinArray                 m_pinyin;

@@ -31,13 +31,13 @@
 
 namespace PyZy {
 
-class Query;
-class Database;
 class Config;
+class Database;
+class Query;
 
 class PhraseEditor {
 public:
-    PhraseEditor (Config & config);
+    explicit PhraseEditor (const Config & config);
     ~PhraseEditor (void);
 
     const String & selectedString (void) const  { return m_selected_string; }
@@ -118,6 +118,7 @@ private:
     void updateTheFirstCandidate (void);
 
 private:
+    const Config &m_config;
     PhraseArray m_candidates;           // candidates phrase array
     PhraseArray m_selected_phrases;     // selected phrases, before cursor
     String      m_selected_string;      // selected phrases, in string format
@@ -125,7 +126,6 @@ private:
     PinyinArray m_pinyin;
     size_t m_cursor;
     std::shared_ptr<Query> m_query;
-    Config    & m_config;
 };
 
 };  // namespace PyZy

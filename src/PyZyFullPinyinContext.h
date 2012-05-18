@@ -26,12 +26,10 @@
 
 namespace PyZy {
 
-class Config;
-
 class FullPinyinContext : public PinyinContext {
 
 public:
-    FullPinyinContext (Config & config, PhoneticContext::Observer *observer);
+    explicit FullPinyinContext (PhoneticContext::Observer *observer);
     virtual ~FullPinyinContext (void);
 
 public:
