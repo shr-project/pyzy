@@ -43,21 +43,20 @@ public:
 
     /**
      * \brief Creates a Variant object from the argument.
-     * @value boolean value.
+     * @param value boolean value.
      * @return Variant object.
      */
     static Variant fromBool (bool value);
 
     /**
      * \brief Creates a Variant object from the argument.
-     * @value unsigned int value.
+     * @param value unsigned int value.
      * @return Variant object.
      */
     static Variant fromUnsignedInt (unsigned int value);
 
     /**
      * \brief Creates a null Variant object.
-     * @value unsigned int value.
      * @return Variant object.
      */
     static Variant nullVariant (void);

@@ -301,14 +301,12 @@ public:
 
     /**
      * \brief Focuses a previous candidate.
-     * @param index Index of the candidate. (0-origin)
      * @return true if focused index is changed.
      */
     virtual bool focusCandidatePrevious (void) = 0;
 
     /**
      * \brief Focuses a next candidate.
-     * @param index Index of the candidate. (0-origin)
      * @return true if there are some candidates after the focused candidate;
      *           false otherwise.
      */
@@ -446,7 +444,7 @@ public:
     /**
      * \brief Sets property of the context.
      * @param name you want to get.
-     * @variant value of the property.
+     * @param variant value of the property.
      * @return true if the value is set successfully.
      */
     virtual bool setProperty (PropertyName name, const Variant &variant)= 0;
