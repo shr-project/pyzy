@@ -23,6 +23,10 @@
 
 namespace PyZy {
 
+Variant::Variant()
+{
+}
+
 // static
 Variant Variant::fromBool (bool value)
 {
