@@ -22,7 +22,7 @@
 #ifndef __PYZY_CONFIG_H_
 #define __PYZY_CONFIG_H_
 
-#include <PyZyConst.h>
+#include "PyZyConst.h"
 
 namespace PyZy {
 

@@ -24,7 +24,7 @@ m4_define([pyzy_released], [1])
 
 m4_define([pyzy_major_version], [0])
 m4_define([pyzy_minor_version], [0])
-m4_define([pyzy_micro_version], [5])
+m4_define([pyzy_micro_version], [6])
 m4_define([pyzy_interface_age], [0])
 m4_define([pyzy_binary_age],
           [m4_eval(100 * pyzy_minor_version + pyzy_micro_version)])
@@ -181,17 +181,26 @@ AC_ARG_ENABLE(db-open-phrase,
 )
 AM_CONDITIONAL(PYZY_BUILD_DB_OPEN_PHRASE, [test x"$enable_db_open_phrase" = x"yes" ])
 
+# doxygen
+AC_CHECK_PROGS([DOXYGEN], [doxygen])
+if test -z "$DOXYGEN"; then
+    AC_MSG_WARN([Doxygen not found - continuing without Doxygen support])
+fi
+AM_CONDITIONAL([HAVE_DOXYGEN], [test -n "$DOXYGEN"])
+AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([docs/Doxyfile])])   
+
 # OUTPUT files
 AC_CONFIG_FILES([
 Makefile
-pyzy.spec
-pyzy-1.0.pc
-src/Makefile
 data/Makefile
 data/db/Makefile
 data/db/android/Makefile
 data/db/open-phrase/Makefile
+docs/Makefile
 m4/Makefile
+pyzy-1.0.pc
+pyzy.spec
+src/Makefile
 ])
 
 AC_OUTPUT

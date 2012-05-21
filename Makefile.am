@@ -21,8 +21,9 @@
 
 SUBDIRS = \
 	data \
-	src \
+        docs \
 	m4 \
+	src \
 	$(NULL)
 
 pkgconfigdir = $(libdir)/pkgconfig

@@ -22,7 +22,12 @@
 #ifndef __PYZY_CONST_H_
 #define __PYZY_CONST_H_
 
-/* constants for options */
+/**
+ * PINYIN_INCOMPLETE_PINYIN
+ *
+ * Allows incomplete pinyin.
+ * If you enable it, you can get a candidate "你好"(nihao) from "nh"
+ */
 #define PINYIN_INCOMPLETE_PINYIN    (1U << 0)
 
 #define PINYIN_CORRECT_GN_TO_NG     (1U << 1)
@@ -33,6 +38,12 @@
 #define PINYIN_CORRECT_UE_TO_VE     (1U << 6)
 #define PINYIN_CORRECT_V_TO_U       (1U << 7)
 #define PINYIN_CORRECT_ON_TO_ONG    (1U << 8)
+
+/**
+ * PINYIN_CORRECT_ALL
+ *
+ * Enables all typo correction rules which are supported by pyzy.
+ */
 #define PINYIN_CORRECT_ALL          (0x000001fe)
 
 #define PINYIN_FUZZY_C_CH           (1U << 9)
@@ -60,6 +71,12 @@
 #define PINYIN_FUZZY_IANG_IAN       PINYIN_FUZZY_ANG_AN
 #define PINYIN_FUZZY_UAN_UANG       PINYIN_FUZZY_AN_ANG
 #define PINYIN_FUZZY_UANG_UAN       PINYIN_FUZZY_ANG_AN
+
+/**
+ * PINYIN_CORRECT_ALL
+ *
+ * Enables all pinyin correction rules which are supported by pyzy.
+ */
 #define PINYIN_FUZZY_ALL            (0x1ffffe00)
 
 #define DOUBLE_PINYIN_KEYBOARD_MSPY  (0)
@@ -68,12 +85,12 @@
 #define DOUBLE_PINYIN_KEYBOARD_ZGPY  (3)
 #define DOUBLE_PINYIN_KEYBOARD_PYJJ  (4)
 #define DOUBLE_PINYIN_KEYBOARD_XHE   (5)
-#define DOUBLE_PINYIN_KEYBOARD_LAST  (6)  /* Number of DoublePinyinSchema */
+#define DOUBLE_PINYIN_KEYBOARD_LAST  (6)  /** Number of DoublePinyinSchema */
 
 #define BOPOMOFO_KEYBOARD_STANDARD   (0)
 #define BOPOMOFO_KEYBOARD_CHING_YEAH (1)
 #define BOPOMOFO_KEYBOARD_ETAN       (2)
 #define BOPOMOFO_KEYBOARD_IBM        (3)
-#define BOPOMOFO_KEYBOARD_LAST       (4)  /* Number of BopomofoSchema */
+#define BOPOMOFO_KEYBOARD_LAST       (4)  /** Number of BopomofoSchema */
 
 #endif  // __PYZY_CONST_H_

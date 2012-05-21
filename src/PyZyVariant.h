@@ -24,20 +24,65 @@
 
 namespace PyZy {
 
+/**
+ * \brief Variant class to handle various type of value.
+ */
 class Variant {
 public:
+    /**
+     * \brief The type contained in the variant.
+     */
     enum Type {
+        /** null */
         TYPE_NULL,
+        /** boolean value */
         TYPE_BOOL,
+        /** unsigned int value */
         TYPE_UNSIGNED_INT,
     };
 
+    /**
+     * \brief Creates a Variant object from the argument.
+     * @value boolean value.
+     * @return Variant object.
+     */
     static Variant fromBool (bool value);
+
+    /**
+     * \brief Creates a Variant object from the argument.
+     * @value unsigned int value.
+     * @return Variant object.
+     */
     static Variant fromUnsignedInt (unsigned int value);
+
+    /**
+     * \brief Creates a null Variant object.
+     * @value unsigned int value.
+     * @return Variant object.
+     */
     static Variant nullVariant (void);
 
+    /**
+     * \brief Gets a type of the contained value.
+     * @return type of the contained value.
+     * @see Type
+     */
     Type getType (void) const;
+
+    /**
+     * \brief Gets a value as bool.
+     * @return value of the variant as bool.
+     *
+     * This method doesn't check the type.
+     */
     bool getBool (void) const;
+
+    /**
+     * \brief Gets a value as unsigned int.
+     * @return value of the variant as bool.
+     *
+     * This method doesn't check the type.
+     */
     unsigned int getUnsignedInt (void) const;
 
 private:
