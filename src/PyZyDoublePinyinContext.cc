@@ -342,48 +342,63 @@ DoublePinyinContext::isPinyin (int i)
 inline const Pinyin *
 DoublePinyinContext::isPinyin (int i, int j)
 {
-    const Pinyin *pinyin;
+    const Pinyin *pinyin = NULL;
     char sheng = ID_TO_SHENG (i);
     const char *yun = ID_TO_YUNS (j);
 
-    if (sheng == PINYIN_ID_VOID || yun[0] == PINYIN_ID_VOID)
-        return NULL;
+    do {
+        if (sheng == PINYIN_ID_VOID || yun[0] == PINYIN_ID_VOID)
+            break;
 
-    if (sheng == PINYIN_ID_ZERO && yun[0] == PINYIN_ID_ZERO)
-        return NULL;
+        if (sheng == PINYIN_ID_ZERO && yun[0] == PINYIN_ID_ZERO)
+            break;
 
-    if (yun[1] == PINYIN_ID_VOID) {
-        return PinyinParser::isPinyin (
-            sheng, yun[0],
-            m_config.option & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
-    }
+        if (yun[1] == PINYIN_ID_VOID) {
+            pinyin = PinyinParser::isPinyin (
+                sheng, yun[0],
+                m_config.option & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
+            break;
+        }
 
-    pinyin = PinyinParser::isPinyin (
-        sheng, yun[0], m_config.option & (PINYIN_FUZZY_ALL));
-    if (pinyin == NULL)
+        // Check sheng + yun[0] without all fuzzy pinyin options
+        pinyin = PinyinParser::isPinyin(sheng, yun[0], 0);
+        if (pinyin != NULL)
+            break;
+
+        // Check sheng + yun[1] without all fuzzy pinyin options
+        pinyin = PinyinParser::isPinyin(sheng, yun[1], 0);
+        if (pinyin != NULL)
+            break;
+
+        pinyin = PinyinParser::isPinyin (
+            sheng, yun[0], m_config.option & (PINYIN_FUZZY_ALL));
+        if (pinyin != NULL)
+            break;
+
         pinyin = PinyinParser::isPinyin (
             sheng, yun[1], m_config.option & (PINYIN_FUZZY_ALL));
-    if (pinyin != NULL)
-        return pinyin;
+        if (pinyin != NULL)
+          break;
 
-    /* if sheng == j q x y and yun == v, try to correct v to u */
-    if ((m_config.option & PINYIN_CORRECT_V_TO_U) == 0)
-        return NULL;
+        /* if sheng == j q x y and yun == v, try to correct v to u */
+        if ((m_config.option & PINYIN_CORRECT_V_TO_U) == 0)
+            break;
 
-    if (yun[0] != PINYIN_ID_V && yun[1] != PINYIN_ID_V)
-        return NULL;
+        if (yun[0] == PINYIN_ID_V || yun[1] == PINYIN_ID_V) {
+            switch (sheng) {
+            case PINYIN_ID_J:
+            case PINYIN_ID_Q:
+            case PINYIN_ID_X:
+            case PINYIN_ID_Y:
+                pinyin = PinyinParser::isPinyin (
+                    sheng, PINYIN_ID_V,
+                    m_config.option & (
+                        PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
+            }
+        }
+    } while (false);
 
-    switch (sheng) {
-    case PINYIN_ID_J:
-    case PINYIN_ID_Q:
-    case PINYIN_ID_X:
-    case PINYIN_ID_Y:
-        return PinyinParser::isPinyin (
-            sheng, PINYIN_ID_V,
-            m_config.option & (PINYIN_FUZZY_ALL | PINYIN_CORRECT_V_TO_U));
-    default:
-        return NULL;
-    }
+    return pinyin;
 }
 
 inline bool
