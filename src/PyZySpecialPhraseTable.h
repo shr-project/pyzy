@@ -35,7 +35,7 @@ typedef std::shared_ptr<SpecialPhrase> SpecialPhrasePtr;
 
 class SpecialPhraseTable {
 private:
-    SpecialPhraseTable (void);
+    explicit SpecialPhraseTable (const std::string &config_dir);
 
 public:
     bool lookup (const std::string &command, std::vector<std::string> &result);
@@ -44,14 +44,15 @@ private:
     bool load (const char *file);
 
 public:
-    static SpecialPhraseTable & instance (void) { return m_instance; }
+    static void init (const std::string &config_dir);
+    static SpecialPhraseTable & instance (void);
 
 private:
     typedef std::multimap<std::string, SpecialPhrasePtr> Map;
     Map m_map;
 
 private:
-    static SpecialPhraseTable m_instance;
+    static std::unique_ptr<SpecialPhraseTable> m_instance;
 };
 
 };  // namespace PyZy

@@ -26,7 +26,7 @@
 
 namespace PyZy {
 
-SpecialPhraseTable SpecialPhraseTable::m_instance;
+std::unique_ptr<SpecialPhraseTable> SpecialPhraseTable::m_instance;
 
 class StaticSpecialPhrase : public SpecialPhrase {
 public:
@@ -40,10 +40,10 @@ private:
     std::string m_text;
 };
 
-SpecialPhraseTable::SpecialPhraseTable (void)
+SpecialPhraseTable::SpecialPhraseTable (const std::string &config_dir)
 {
-    char * path = g_build_filename (g_get_user_config_dir (),
-                        "pyzy", "phrases.txt", NULL);
+    char * path =
+        g_build_filename (config_dir.c_str(), "pyzy", "phrases.txt", NULL);
 
     load ("phrases.txt") ||
     load (path) ||
@@ -99,5 +99,25 @@ SpecialPhraseTable::load (const char *file)
     }
     return true;
 }
+
+void
+SpecialPhraseTable::init (const std::string &config_dir)
+{
+    if (config_dir.empty ()) {
+        g_error ("Error: An argument of init is empty string.");
+        return;
+    }
+    m_instance.reset (new SpecialPhraseTable (config_dir));
+}
+
+SpecialPhraseTable &
+SpecialPhraseTable::instance (void)
+{
+    if (m_instance.get () == NULL) {
+        g_error ("Error: Please call PyZy::InputContext::init () !");
+    }
+    return *m_instance;
+}
+
 
 };  // namespace PyZy

@@ -360,18 +360,26 @@ public:
     /**
      * \brief Initializes a InputContext class.
      *
-     * You should call it at first.
+     * This is a wrapper function of input (user_cache_dir, user_config_dir).
+     * Default values are set to user_cache_dir and user_config_dir.
+     * You should call this function at first.
      */
     static void init ();
 
     /**
      * \brief Initializes a InputContext class.
-     * @param user_data_dir Directory which stores a user data.
+     * @param user_cache_dir Directory which stores a user cache data.
+     *        (input history, etc.)
+     * @param user_config_dir Directory which stores a user config data.
+     *        If you want to use original special phrase table, please create
+     *        "phrases.txt" under this directory.
      *
      * Specifies a directory to stores user data.
-     * You should call it at first.
+     * You can set a same directory to user_cache_dir and user_config_dir.
+     * You should call this function at first.
      */
-    static void init (const std::string & user_data_dir);
+    static void init (const std::string & user_cache_dir,
+                      const std::string & user_config_dir);
 
     /**
      * \brief Finalizes a InputContext class.

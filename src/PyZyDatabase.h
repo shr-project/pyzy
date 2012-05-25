@@ -80,7 +80,7 @@ public:
     static Database & instance (void)
     {
         if (m_instance == NULL) {
-            g_error ("Error: Please call PhoneticContext::init () !");
+            g_error ("Error: Please call InputContext::init () !");
         }
         return *m_instance;
     }

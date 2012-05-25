@@ -34,15 +34,25 @@ namespace PyZy {
 void
 InputContext::init ()
 {
-    const std::string cache_dir = g_get_user_cache_dir ();
-    const std::string data_dir = cache_dir + G_DIR_SEPARATOR_S + "pyzy";
-    init (data_dir);
+    const std::string cache_dir =
+        g_build_filename (g_get_user_cache_dir (), "pyzy", NULL);
+    const std::string config_dir =
+        g_build_filename (g_get_user_config_dir (), "pyzy", NULL);
+    init (cache_dir, config_dir);
 }
-
 void
-InputContext::init (const std::string & user_data_dir)
+InputContext::init (const std::string & user_cache_dir,
+                    const std::string & user_config_dir)
 {
-    Database::init (user_data_dir);
+    if (user_cache_dir.empty ()) {
+        g_error ("Error: user_cache_dir should not be empty");
+    }
+    if (user_config_dir.empty ()) {
+        g_error ("Error: user_config_dir should not be empty");
+    }
+
+    Database::init (user_cache_dir);
+    SpecialPhraseTable::init (user_config_dir);
 }
 
 void
