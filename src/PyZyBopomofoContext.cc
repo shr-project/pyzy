@@ -62,6 +62,8 @@ BopomofoContext::insert (char ch)
         return true;
 
     m_text.insert (m_cursor++, ch);
+    updateInputText ();
+    updateCursor ();
 
     if (G_UNLIKELY (!(m_config.option & PINYIN_INCOMPLETE_PINYIN))) {
         updateSpecialPhrases ();
@@ -80,6 +82,7 @@ BopomofoContext::insert (char ch)
             updateAuxiliaryText ();
         }
     }
+
     return true;
 }
 
@@ -91,7 +94,8 @@ BopomofoContext::removeCharBefore (void)
 
     m_cursor --;
     m_text.erase (m_cursor, 1);
-
+    updateInputText ();
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -105,6 +109,7 @@ BopomofoContext::removeCharAfter (void)
         return false;
 
     m_text.erase (m_cursor, 1);
+    updateInputText ();
     updatePreeditText ();
     updateAuxiliaryText ();
 
@@ -131,6 +136,8 @@ BopomofoContext::removeWordBefore (void)
 
     m_text.erase (cursor, m_cursor - cursor);
     m_cursor = cursor;
+    updateInputText ();
+    updateCursor ();
     updateSpecialPhrases ();
     updatePhraseEditor ();
     update ();
@@ -144,6 +151,7 @@ BopomofoContext::removeWordAfter (void)
         return false;
 
     m_text.erase (m_cursor, -1);
+    updateInputText ();
     updatePreeditText ();
     updateAuxiliaryText ();
     return true;
@@ -156,6 +164,7 @@ BopomofoContext::moveCursorLeft (void)
         return false;
 
     m_cursor --;
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -169,7 +178,7 @@ BopomofoContext::moveCursorRight (void)
         return false;
 
     m_cursor ++;
-
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -192,6 +201,7 @@ BopomofoContext::moveCursorLeftByWord (void)
     m_pinyin_len -= p.len;
     m_pinyin.pop_back ();
 
+    updateCursor ();
     updateSpecialPhrases ();
     updatePhraseEditor ();
     update ();
@@ -215,6 +225,7 @@ BopomofoContext::moveCursorToBegin (void)
     m_pinyin.clear ();
     m_pinyin_len = 0;
 
+    updateCursor ();
     updateSpecialPhrases ();
     updatePhraseEditor ();
     update ();
@@ -229,6 +240,7 @@ BopomofoContext::moveCursorToEnd (void)
         return false;
 
     m_cursor = m_text.length ();
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -345,6 +357,8 @@ BopomofoContext::commit (CommitType type)
     }
 
     resetContext ();
+    updateInputText ();
+    updateCursor ();
     update ();
     PhoneticContext::commitText (m_buffer);
 }

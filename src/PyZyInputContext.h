@@ -89,6 +89,7 @@ public:
     public:
         virtual ~Observer () { }
 
+
         /**
          * \brief Notifies a commit text.
          * @param context InputContext instance which triggered this method.
@@ -99,6 +100,23 @@ public:
          */
         virtual void commitText (const InputContext * context,
                                  const std::string &commit_text) = 0;
+
+        /**
+         * \brief Notifies input text is changed.
+         * @param context InputContext instance which triggered this method.
+         *
+         * This method is triggered by InputContext when input text is
+         * changed.
+         */
+        virtual void inputTextChanged (const InputContext * context) = 0;
+
+        /**
+         * \brief Notifies cursor is changed.
+         * @param context InputContext instance which triggered this method.
+         *
+         * This method is triggered by InputContext when cursor is changed.
+         */
+        virtual void cursorChanged (const InputContext * context) = 0;
 
         /**
          * \brief Notifies preedit text is changed.

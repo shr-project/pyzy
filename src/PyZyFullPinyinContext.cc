@@ -49,6 +49,8 @@ FullPinyinContext::insert (char ch)
         return true;
 
     m_text.insert (m_cursor++, ch);
+    updateInputText ();
+    updateCursor ();
 
     if (G_UNLIKELY (!(m_config.option & PINYIN_INCOMPLETE_PINYIN))) {
         updateSpecialPhrases ();
@@ -78,7 +80,8 @@ FullPinyinContext::removeCharBefore (void)
 
     m_cursor --;
     m_text.erase (m_cursor, 1);
-
+    updateInputText ();
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -92,6 +95,7 @@ FullPinyinContext::removeCharAfter (void)
         return false;
 
     m_text.erase (m_cursor, 1);
+    updateInputText ();
     updatePreeditText ();
     updateAuxiliaryText ();
 
@@ -118,6 +122,8 @@ FullPinyinContext::removeWordBefore (void)
 
     m_text.erase (cursor, m_cursor - cursor);
     m_cursor = cursor;
+    updateInputText ();
+    updateCursor ();
     updateSpecialPhrases ();
     updatePhraseEditor ();
     update ();
@@ -131,6 +137,7 @@ FullPinyinContext::removeWordAfter (void)
         return false;
 
     m_text.erase (m_cursor, -1);
+    updateInputText ();
     updatePreeditText ();
     updateAuxiliaryText ();
     return true;
@@ -143,6 +150,7 @@ FullPinyinContext::moveCursorLeft (void)
         return false;
 
     m_cursor --;
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -156,6 +164,7 @@ FullPinyinContext::moveCursorRight (void)
         return false;
 
     m_cursor ++;
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 
@@ -178,6 +187,7 @@ FullPinyinContext::moveCursorLeftByWord (void)
     m_pinyin_len -= p.len;
     m_pinyin.pop_back ();
 
+    updateCursor ();
     updateSpecialPhrases ();
     updatePhraseEditor ();
     update ();
@@ -200,6 +210,7 @@ FullPinyinContext::moveCursorToBegin (void)
     m_pinyin.clear ();
     m_pinyin_len = 0;
 
+    updateCursor ();
     updateSpecialPhrases ();
     updatePhraseEditor ();
     update ();
@@ -213,6 +224,7 @@ FullPinyinContext::moveCursorToEnd (void)
         return false;
 
     m_cursor = m_text.length ();
+    updateCursor ();
     updateSpecialPhrases ();
     updatePinyin ();
 

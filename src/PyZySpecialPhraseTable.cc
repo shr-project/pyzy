@@ -43,7 +43,7 @@ private:
 SpecialPhraseTable::SpecialPhraseTable (const std::string &config_dir)
 {
     char * path =
-        g_build_filename (config_dir.c_str(), "pyzy", "phrases.txt", NULL);
+        g_build_filename (config_dir.c_str(), "phrases.txt", NULL);
 
     load ("phrases.txt") ||
     load (path) ||

@@ -66,12 +66,25 @@ PhoneticContext::reset (void)
 {
     resetContext ();
     update ();
+    updateInputText ();
 }
 
 void
 PhoneticContext::commitText (const std::string & commit_text)
 {
     m_observer->commitText (this, commit_text);
+}
+
+void
+PhoneticContext::updateInputText (void)
+{
+    m_observer->inputTextChanged (this);
+}
+
+void
+PhoneticContext::updateCursor (void)
+{
+    m_observer->cursorChanged (this);
 }
 
 void
@@ -197,7 +210,7 @@ PhoneticContext::resetCandidate (size_t i)
     i -= m_special_phrases.size ();
 
     if (m_phrase_editor.resetCandidate (i)) {
-        updateCandidates();
+        updateCandidates ();
     }
 
     return true;

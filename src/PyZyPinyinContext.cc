@@ -62,6 +62,8 @@ PinyinContext::commit (CommitType type)
     }
 
     resetContext ();
+    updateInputText ();
+    updateCursor ();
     update ();
     PhoneticContext::commitText (m_buffer);
 }
