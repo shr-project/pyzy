@@ -574,9 +574,9 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = @top_srcdir@/src/PyZyConst.h \
-                         @top_srcdir@/src/PyZyInputContext.h \
-                         @top_srcdir@/src/PyZyVariant.h	
+INPUT                  = @top_srcdir@/src/Const.h \
+                         @top_srcdir@/src/InputContext.h \
+                         @top_srcdir@/src/Variant.h
                          
 
 # This tag can be used to specify the character encoding of the source files

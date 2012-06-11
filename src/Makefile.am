@@ -35,11 +35,11 @@
 
 libpyzy=libpyzy-1.0.la
 
-libpyzyincludedir = $(includedir)/pyzy-@PYZY_API_VERSION@
+libpyzyincludedir = $(includedir)/pyzy-@PYZY_API_VERSION@/PyZy
 libpyzyinclude_HEADERS = \
-	PyZyConst.h \
-	PyZyInputContext.h \
-	PyZyVariant.h \
+	Const.h \
+	InputContext.h \
+	Variant.h \
 	$(NULL)
 
 lib_LTLIBRARIES = $(libpyzy)
@@ -47,51 +47,51 @@ lib_LTLIBRARIES = $(libpyzy)
 libpyzy_built_c_sources = \
 	$(NULL)
 libpyzy_built_h_sources = \
-	PyZyBopomofoKeyboard.h \
-	PyZyPinyinParserTable.h \
-	PyZySimpTradConverterTable.h \
+	BopomofoKeyboard.h \
+	PinyinParserTable.h \
+	SimpTradConverterTable.h \
 	$(NULL)
 libpyzy_c_sources = \
-	PyZyBopomofoContext.cc \
-	PyZyDatabase.cc \
-	PyZyDoublePinyinContext.cc \
-	PyZyDynamicSpecialPhrase.cc \
-	PyZyFullPinyinContext.cc \
-	PyZyInputContext.cc \
-	PyZyPhoneticContext.cc \
-	PyZyPhraseEditor.cc \
-	PyZyPinyinContext.cc \
-	PyZyPinyinParser.cc \
-	PyZySimpTradConverter.cc \
-	PyZySpecialPhraseTable.cc \
-	PyZyVariant.cc \
+	BopomofoContext.cc \
+	Database.cc \
+	DoublePinyinContext.cc \
+	DynamicSpecialPhrase.cc \
+	FullPinyinContext.cc \
+	InputContext.cc \
+	PhoneticContext.cc \
+	PhraseEditor.cc \
+	PinyinContext.cc \
+	PinyinParser.cc \
+	SimpTradConverter.cc \
+	SpecialPhraseTable.cc \
+	Variant.cc \
 	$(NULL)
-#	PyZyTest.cc 
+#	Test.cc 
 libpyzy_h_sources = \
-	PyZyBopomofo.h \
-	PyZyBopomofoContext.h \
-	PyZyConfig.h \
-	PyZyConst.h \
-	PyZyDatabase.h \
-	PyZyDoublePinyinContext.h \
-	PyZyDoublePinyinTable.h \
-	PyZyDynamicSpecialPhrase.h \
-	PyZyFullPinyinContext.h \
-	PyZyInputContext.h \
-	PyZyPhoneticContext.h \
-	PyZyPhrase.h \
-	PyZyPhraseArray.h \
-	PyZyPhraseEditor.h \
-	PyZyPinyinArray.h \
-	PyZyPinyinContext.h \
-	PyZyPinyinParser.h \
-	PyZySimpTradConverter.h \
-	PyZySpecialPhrase.h \
-	PyZySpecialPhraseTable.h \
-	PyZyString.h \
-	PyZyTypes.h \
-	PyZyUtil.h \
-	PyZyVariant.h \
+	Bopomofo.h \
+	BopomofoContext.h \
+	Config.h \
+	Const.h \
+	Database.h \
+	DoublePinyinContext.h \
+	DoublePinyinTable.h \
+	DynamicSpecialPhrase.h \
+	FullPinyinContext.h \
+	InputContext.h \
+	PhoneticContext.h \
+	Phrase.h \
+	PhraseArray.h \
+	PhraseEditor.h \
+	PinyinArray.h \
+	PinyinContext.h \
+	PinyinParser.h \
+	SimpTradConverter.h \
+	SpecialPhrase.h \
+	SpecialPhraseTable.h \
+	String.h \
+	Types.h \
+	Util.h \
+	Variant.h \
 	$(NULL)
 
 libpyzy_1_0_la_SOURCES = \
@@ -152,26 +152,26 @@ CLEANFILES = \
 	ZhConversion.* \
 	$(NULL)
 
-PyZyBopomofoKeyboard.h:
+BopomofoKeyboard.h:
 	$(AM_V_GEN) \
 	$(PYTHON) $(top_srcdir)/scripts/genbopomofokeyboard.py > $@ || \
 		( $(RM) $@; exit 1 )
 
-PyZyPinyinParserTable.h:
+PinyinParserTable.h:
 	$(AM_V_GEN) \
 	$(PYTHON) $(top_srcdir)/scripts/genpytable.py > $@ || \
 		( $(RM) $@; exit 1 )
 
-PyZySimpTradConverterTable.h:
+SimpTradConverterTable.h:
 	$(AM_V_GEN) \
 	$(PYTHON) $(top_srcdir)/scripts/update-simptrad-table.py > $@ || \
 		( $(RM) $@; exit 1 )
 
 update-simptrad-table:
-	$(RM) ZhConversion.php ZhConversion.py PyZySimpTradConverterTable.h
+	$(RM) ZhConversion.php ZhConversion.py SimpTradConverterTable.h
 	$(MAKE) ZhConversion.php
 	$(MAKE) ZhConversion.py
-	$(MAKE) PyZySimpTradConverterTable.h
+	$(MAKE) SimpTradConverterTable.h
 
 ZhConversion.php:
 	$(AM_V_GEN) \
