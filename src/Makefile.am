@@ -66,7 +66,6 @@ libpyzy_c_sources = \
 	SpecialPhraseTable.cc \
 	Variant.cc \
 	$(NULL)
-#	Test.cc 
 libpyzy_h_sources = \
 	Bopomofo.h \
 	BopomofoContext.h \
