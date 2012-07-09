@@ -181,6 +181,15 @@ AC_ARG_ENABLE(db-open-phrase,
 )
 AM_CONDITIONAL(PYZY_BUILD_DB_OPEN_PHRASE, [test x"$enable_db_open_phrase" = x"yes" ])
 
+# --enable-tests option.
+AC_ARG_ENABLE(tests,
+    AS_HELP_STRING([--enable-tests],
+                   [Run tests]),
+    [enable_tests=$enableval],
+    [enable_tests=no]
+)
+AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" = x"yes"])
+
 # doxygen
 AC_CHECK_PROGS([DOXYGEN], [doxygen])
 if test -z "$DOXYGEN"; then
@@ -201,6 +210,7 @@ m4/Makefile
 pyzy-1.0.pc
 pyzy.spec
 src/Makefile
+src/tests/Makefile
 ])
 
 AC_OUTPUT
@@ -213,5 +223,6 @@ Build options:
     Use opencc                  $enable_opencc
     Build database android      $enable_db_android
     Build database open-phrase  $enable_db_open_phrase
+    Run test cases              $enable_tests
 ])
 

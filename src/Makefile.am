@@ -33,6 +33,13 @@
 # 	$(NULL)
 # 
 
+if ENABLE_TESTS
+SUBDIRS = \
+	. \
+	tests \
+	$(NULL)
+endif
+
 libpyzy=libpyzy-1.0.la
 
 libpyzyincludedir = $(includedir)/pyzy-@PYZY_API_VERSION@/PyZy
