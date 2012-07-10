@@ -34,11 +34,14 @@ namespace PyZy {
 void
 InputContext::init ()
 {
-    const std::string cache_dir =
+    char *cache_dir =
         g_build_filename (g_get_user_cache_dir (), "pyzy", NULL);
-    const std::string config_dir =
+    char *config_dir =
         g_build_filename (g_get_user_config_dir (), "pyzy", NULL);
     init (cache_dir, config_dir);
+
+    g_free (cache_dir);
+    g_free (config_dir);
 }
 void
 InputContext::init (const std::string & user_cache_dir,
