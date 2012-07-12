@@ -29,18 +29,6 @@
 namespace PyZy {
 #include "BopomofoKeyboard.h"
 
-const static char * bopomofo_select_keys[] = {
-    "1234567890",
-    "asdfghjkl;",
-    "1qaz2wsxed",
-    "asdfzxcvgb",
-    "1234qweras",
-    "aoeu;qjkix",
-    "aoeuhtnsid",
-    "aoeuidhtns",
-    "qweasdzxcr"
-};
-
 BopomofoContext::BopomofoContext (PhoneticContext::Observer *observer)
     : PhoneticContext (observer),
       m_bopomofo_schema (BOPOMOFO_KEYBOARD_STANDARD)
@@ -374,8 +362,6 @@ BopomofoContext::updatePreeditText (void)
         return;
     }
 
-    size_t edit_begin_word = 0;
-    size_t edit_end_word = 0;
     size_t edit_begin_byte = 0;
     size_t edit_end_byte = 0;
 
@@ -388,14 +374,12 @@ BopomofoContext::updatePreeditText (void)
     if (G_UNLIKELY (! m_selected_special_phrase.empty ())) {
         /* add selected special phrase */
         m_buffer << m_selected_special_phrase;
-        edit_begin_word = edit_end_word = m_buffer.utf8Length ();
         edit_begin_byte = edit_end_byte = m_buffer.size ();
 
         /* append text after cursor */
         m_buffer << textAfterCursor ();
     }
     else {
-        edit_begin_word = m_buffer.utf8Length ();
         edit_begin_byte = m_buffer.size ();
 
         if (hasCandidate (0)) {
@@ -403,7 +387,6 @@ BopomofoContext::updatePreeditText (void)
 
             if (index < m_special_phrases.size ()) {
                 m_buffer << m_special_phrases[index].c_str ();
-                edit_end_word = m_buffer.utf8Length ();
                 edit_end_byte = m_buffer.size ();
 
                 /* append text after cursor */
@@ -417,7 +400,6 @@ BopomofoContext::updatePreeditText (void)
                         m_buffer << candidate;
                     else
                         SimpTradConverter::simpToTrad (candidate, m_buffer);
-                    edit_end_word = m_buffer.utf8Length ();
                     edit_end_byte = m_buffer.size ();
                     /* append rest text */
                     for (const char *p=m_text.c_str() + m_pinyin_len; *p ;++p) {
@@ -430,13 +412,11 @@ BopomofoContext::updatePreeditText (void)
                             m_buffer << ' ';
                         m_buffer.appendUnichar (bopomofo_char[keyvalToBopomofo (*p)]);
                     }
-                    edit_end_word = m_buffer.utf8Length ();
                     edit_end_byte = m_buffer.size ();
                 }
             }
         }
         else {
-            edit_end_word = m_buffer.utf8Length ();
             edit_end_byte = m_buffer.size ();
             for (const char *p=m_text.c_str () + m_pinyin_len; *p ; ++p) {
                 m_buffer.appendUnichar (bopomofo_char[keyvalToBopomofo (*p)]);
