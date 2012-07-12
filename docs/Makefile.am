@@ -30,5 +30,8 @@ CLEANFILES = doxyfile.stamp
 all-local: doxyfile.stamp
 
 clean-local:
-	rm -rf $(top_srcdir)/docs/html
+	rm -rf html
+
+distclean-local: clean-local
+
 endif

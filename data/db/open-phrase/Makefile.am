@@ -26,8 +26,8 @@ main_db_DATA = \
 	$(NULL)
 main_dbdir = $(pkgdatadir)/db
 
-DBVER = 1.2.99
-DBTAR = pinyin-database-$(DBVER).tar.bz2
+DBVER = 1.0.0
+DBTAR = pyzy-database-$(DBVER).tar.bz2
 
 $(DBTAR):
 	$(AM_V_GEN) \

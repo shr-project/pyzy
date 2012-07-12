@@ -6,7 +6,7 @@ License:    LGPL2.1
 Group:      System Environment/Libraries
 URL:        http://code.google.com/p/pyzy
 Source0:    http://pyzy.googlecode.com/files/%{name}-%{version}.tar.gz
-Source1:    pinyin-database-1.2.99.tar.bz2
+Source1:    http://pyzy.googlecode.com/files/pyzy-database-1.0.0.tar.bz2
 
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -15,7 +15,6 @@ BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  sqlite-devel
 BuildRequires:  libuuid-devel
-BuildRequires:  gtest-devel
 
 # Requires(post): sqlite
 
@@ -55,7 +54,6 @@ The phrase database for pyzy from android project.
 
 %prep
 %setup -q
-cp %{SOURCE1} data/db/open-phrase
 
 %build
 %configure --disable-static --enable-db-open-phrase
