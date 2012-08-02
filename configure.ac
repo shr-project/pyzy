@@ -24,7 +24,7 @@ m4_define([pyzy_released], [1])
 
 m4_define([pyzy_major_version], [0])
 m4_define([pyzy_minor_version], [0])
-m4_define([pyzy_micro_version], [8])
+m4_define([pyzy_micro_version], [9])
 m4_define([pyzy_interface_age], [0])
 m4_define([pyzy_binary_age],
           [m4_eval(100 * pyzy_minor_version + pyzy_micro_version)])

@@ -574,7 +574,8 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = @top_srcdir@/src/Const.h \
+INPUT                  = @top_srcdir@/docs/mainpage.txt \
+                         @top_srcdir@/src/Const.h \
                          @top_srcdir@/src/InputContext.h \
                          @top_srcdir@/src/Variant.h
                          

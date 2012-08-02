@@ -98,7 +98,7 @@ public:
          * This method is triggered by InputContext when conversion result
          * is commited.
          */
-        virtual void commitText (const InputContext * context,
+        virtual void commitText (InputContext * context,
                                  const std::string &commit_text) = 0;
 
         /**
@@ -108,7 +108,7 @@ public:
          * This method is triggered by InputContext when input text is
          * changed.
          */
-        virtual void inputTextChanged (const InputContext * context) = 0;
+        virtual void inputTextChanged (InputContext * context) = 0;
 
         /**
          * \brief Notifies cursor is changed.
@@ -116,7 +116,7 @@ public:
          *
          * This method is triggered by InputContext when cursor is changed.
          */
-        virtual void cursorChanged (const InputContext * context) = 0;
+        virtual void cursorChanged (InputContext * context) = 0;
 
         /**
          * \brief Notifies preedit text is changed.
@@ -125,7 +125,7 @@ public:
          * This method is triggered by InputContext when preedit text is
          * changed.
          */
-        virtual void preeditTextChanged (const InputContext * context) = 0;
+        virtual void preeditTextChanged (InputContext * context) = 0;
 
         /**
          * \brief Notifies auxiliary text is changed.
@@ -134,7 +134,7 @@ public:
          * This method is triggered by InputContext when auxiliary text is
          * changed.
          */
-        virtual void auxiliaryTextChanged (const InputContext * context) = 0;
+        virtual void auxiliaryTextChanged (InputContext * context) = 0;
 
         /**
          * \brief Notifies candidates are changed.
@@ -143,7 +143,7 @@ public:
          * This method is triggered by InputContext when candidates are
          * changed.
          */
-        virtual void candidatesChanged (const InputContext * context) = 0;
+        virtual void candidatesChanged (InputContext * context) = 0;
     };
 
     /**
@@ -164,7 +164,7 @@ public:
     enum CommitType {
         /** Commits a input text directly. */
         TYPE_RAW,
-        /** Commits a selected text and rest input text. */
+        /** Commits a phonetic symbols, mainly used for Bopomofo. */
         TYPE_PHONETIC,
         /** Commits a selected text, focused conversion text and rest text. */
         TYPE_CONVERTED,
