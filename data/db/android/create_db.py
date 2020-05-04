@@ -3,6 +3,7 @@ from pydict import *
 from id import *
 from valid_hanzi import *
 import sys
+from functools import cmp_to_key
 
 def get_sheng_yun(pinyin):
     if pinyin == None:
@@ -16,7 +17,7 @@ def get_sheng_yun(pinyin):
     return "", pinyin
 
 def read_phrases(filename):
-    buf = file(filename).read()
+    buf = open(filename, 'r+b').read()
     buf = str(buf, "utf16")
     buf = buf.strip()
     for l in buf.split('\n'):
@@ -49,7 +50,7 @@ def create_db(filename):
         # con.commit()
 
     records = list(read_phrases(filename))
-    records.sort(lambda a, b: 1 if a[1] > b[1] else -1)
+    records.sort (key = cmp_to_key (lambda a, b: 1 if a[1] > b[1] else -1))
     records_new = []
     i = 0
     max_freq = 0.0
